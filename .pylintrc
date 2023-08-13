@@ -1,0 +1,4 @@
+[MESSAGES CONTROL]
+disable =
+	# face_test uses unused import
+	unused-import
