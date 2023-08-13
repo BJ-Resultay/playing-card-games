@@ -9,3 +9,15 @@ It will (hopefully) include various games.
 
 Games TODO:
 - [ ] blackjack
+
+---
+
+## Footnotes
+
+Use `source .env` to set PYTHONPATH.
+
+Code coverage uses the VSCode setting
+'Markiscodecoverage: Search Criteria'
+equal to 'coverage.lcov'.
+This is the default for pytest's
+--cov-report=lcov option.
