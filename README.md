@@ -15,6 +15,7 @@ Games TODO:
 ## Footnotes
 
 Use `source .env` to set PYTHONPATH.
+New packages/modules should be added to PYTHONPATH.
 
 Code coverage uses the VSCode setting
 'Markiscodecoverage: Search Criteria'
