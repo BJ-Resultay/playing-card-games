@@ -10,7 +10,7 @@ $(VENV)/bin/activate: requirements.txt
 setup: $(VENV)/bin/activate
 
 run: $(VENV)/bin/activate
-	$(PYTHON) sample.py
+	$(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
 	$(PYTEST) --cov --cov-report=lcov --cov-branch tests
