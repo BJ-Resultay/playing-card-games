@@ -12,4 +12,4 @@ from sample import main
 # there is no reason to test anything
 def test_nothing():
     """function opens menu"""
-    assert main.main()
+    assert main()
