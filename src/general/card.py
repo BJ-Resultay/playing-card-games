@@ -3,7 +3,8 @@
 # Revision History:
 #	resultay | 15-08-23 | Initial version
 
-import constants
+from src.constants import Face
+from src.constants import Suit
 
 class Card():
     """class models playing card"""
@@ -12,8 +13,8 @@ class Card():
 
     def __init__(
         self,
-        face: constants.Face,
-        suit: constants.Suit,
+        face: Face,
+        suit: Suit,
         points = 0,
     ) -> None:
         self.face = face
