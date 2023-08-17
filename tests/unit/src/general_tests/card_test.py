@@ -15,7 +15,6 @@ def card():
 
 def test_frozen(card):
     """trying to override face value raises an error"""
-    # card = Card(Face.ACE, Suit.SPADE)
     try:
         # cheater switching out the card
         card.face = Face.KING
@@ -24,19 +23,16 @@ def test_frozen(card):
 
 def test_not_frozen(card):
     """overriding point value does not raise error"""
-    # card = Card(Face.ACE, Suit.SPADE)
     assert card.points == 0
     card.points = 1
     assert card.points == 1
 
 def test_flip(card):
     """card flips over"""
-    # card = Card(Face.ACE, Suit.SPADE)
     assert card.face_down
     card.flip()
     assert not card.face_down
 
 def test_face_value(card):
     """returns face value"""
-    # card = Card(Face.ACE, Suit.SPADE)
     assert card.face_value() == 'A\u2660'
