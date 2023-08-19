@@ -3,6 +3,7 @@
 # Revision History:
 #	resultay | 15-08-23 | Initial version
 
+from __future__ import annotations
 from src.constants import Face
 from src.constants import Suit
 
@@ -23,16 +24,18 @@ class Card():
         self.suit = suit
         self._frozen = True
 
+    def __eq__(self, other: Card) -> bool:
+        return self.face == other.face and self.suit == other.suit
+
     def __setattr__(self, attr, value) -> None:
         if self._frozen and attr in ('face', 'suit'):
-            raise AttributeError('msg')
+            raise AttributeError('faces and suits of cards are frozen')
         return super().__setattr__(attr, value)
-
-    def flip(self) -> bool:
-        """function flips card over"""
-        self.face_down = not self.face_down
-        return self.face_down
 
     def face_value(self) -> str:
         """function returns face value"""
         return self.face.value + self.suit.value
+
+    def flip(self) -> None:
+        """function flips card over"""
+        self.face_down = not self.face_down

@@ -13,7 +13,7 @@ run: $(VENV)/bin/activate
 	$(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	$(PYTEST) --cov --cov-report=lcov --cov-branch tests
+	$(PYTEST) --cov --cov-report=lcov --cov-branch -rP tests
 
 clean:
 	rm -rf __pycache__

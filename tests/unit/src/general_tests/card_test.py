@@ -13,6 +13,10 @@ def card():
     """fixture returns ace of spades"""
     return Card(Face.ACE, Suit.SPADE)
 
+def test_equality(card):
+    """card instance equals a separate instance"""
+    assert Card(Face.ACE, Suit.SPADE, 1) == card # points = 0
+
 def test_frozen(card):
     """trying to override face value raises an error"""
     try:
