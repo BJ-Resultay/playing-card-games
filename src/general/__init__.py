@@ -1,4 +1,4 @@
 """modules in general package"""
-from .card import Card
-from .deck import Deck
+from . import card
+from . import deck
 from . import player

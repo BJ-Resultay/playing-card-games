@@ -4,9 +4,9 @@
 #	resultay | 18-08-23 | Initial version
 
 import random
-from src.constants import Face
-from src.constants import Suit
-from src.general import Card
+from src.constants.face import Face
+from src.constants.suit import Suit
+from src.general.card import Card
 
 class Deck():
     """class models deck of playing cards"""
