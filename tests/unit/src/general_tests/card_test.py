@@ -9,7 +9,7 @@ from src.constants import Suit
 from src.general import Card
 
 @pytest.fixture()
-def card():
+def card() -> Card:
     """fixture returns ace of spades"""
     return Card(Face.ACE, Suit.SPADE)
 
@@ -17,13 +17,15 @@ def test_equality(card):
     """card instance equals a separate instance"""
     assert Card(Face.ACE, Suit.SPADE, 1) == card # points = 0
 
+def test_equality_not_card(card):
+    """card instance does not equal not card"""
+    assert not card == 'not card'
+
 def test_frozen(card):
-    """trying to override face value raises an error"""
-    try:
+    """overriding face value raises an error"""
+    with pytest.raises(AttributeError):
         # cheater switching out the card
         card.face = Face.KING
-    except AttributeError:
-        assert True
 
 def test_not_frozen(card):
     """overriding point value does not raise error"""

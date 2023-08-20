@@ -25,6 +25,8 @@ class Card():
         self._frozen = True
 
     def __eq__(self, other: Card) -> bool:
+        if not isinstance(other, Card):
+            return False
         return self.face == other.face and self.suit == other.suit
 
     def __setattr__(self, attr, value) -> None:
