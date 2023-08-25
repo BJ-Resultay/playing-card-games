@@ -1,5 +1,12 @@
+[MASTER]
+fail-under = 10.0
+
+load-plugins =
+	pylint_pytest
+
 [MESSAGES CONTROL]
 disable =
 	unused-import,
-	import-error
+	import-error,
+	redefined-outer-name
 
