@@ -3,16 +3,17 @@
 # Revision History:
 #	resultay | 18-08-23 | Initial version
 
+from __future__ import annotations
 import random
-from src.constants.face import Face
-from src.constants.suit import Suit
+from src.constants import Face
+from src.constants import Suit
 from src.general.card import Card
 
 class Deck():
     """class models deck of playing cards"""
     def __init__(self, extra_cards: list[Card] = None) -> None:
-        self.order = [None] * 52
         self.face_down = True
+        self.order = [None] * 52
 
         # A-K Hearts
         # A-K Clubs
@@ -31,6 +32,18 @@ class Deck():
             for extra_card in extra_cards:
                 self.add_card(extra_card)
 
+    def __add__(self, other: Deck) -> Deck:
+        self.order += other.order
+        return self
+
+    def __mul__(self, other: int) -> Deck:
+        self.order *= other
+        return self
+
+    def __rmul__(self, other: int) -> Deck:
+        self.order *= other
+        return self
+
     def add_card(self, card: Card) -> None:
         """function adds card to the bottom"""
         if not isinstance(card, Card):
@@ -40,6 +53,8 @@ class Deck():
     def deal(self, position: int = 0) -> Card:
         """function removes card from deck"""
         # cheaters can deal any card from the deck
+        if len(self.order) == 0:
+            raise AttributeError('deck is empty')
         if not isinstance(position, int):
             raise AttributeError('position must be integer')
         length = len(self.order)

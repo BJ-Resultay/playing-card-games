@@ -4,8 +4,8 @@
 #	resultay | 15-08-23 | Initial version
 
 from __future__ import annotations
-from src.constants.face import Face
-from src.constants.suit import Suit
+from src.constants import Face
+from src.constants import Suit
 
 class Card():
     """class models playing card"""

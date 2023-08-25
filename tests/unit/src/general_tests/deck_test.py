@@ -5,8 +5,8 @@
 
 import random
 import pytest
-from src.constants.face import Face
-from src.constants.suit import Suit
+from src.constants import Face
+from src.constants import Suit
 from src.general.card import Card
 from src.general.deck import Deck
 
@@ -34,6 +34,21 @@ def test_not_ace_spade(card):
     deck = Deck([card])
     assert deck.order[-1] == card
 
+def test_addition(deck):
+    """decks are added together"""
+    deck2 = deck + deck
+    assert len(deck2.order) == 104
+
+def test_multiplication(deck):
+    """decks multiply deck first"""
+    deck2 = deck * 3
+    assert len(deck2.order) == 156
+
+def test_reverse_multiplication(deck):
+    """decks multiply int first"""
+    deck2 = 5 * deck
+    assert len(deck2.order) == 260
+
 def test_add_card(deck, card):
     """custom card is added to the end of the deck"""
     deck.add_card(card)
@@ -50,6 +65,12 @@ def test_deal(deck, card):
     deck_card = deck.deal(11)
     assert deck_card == card
     assert len(deck.order) == 51
+
+def test_deal_empty(deck):
+    """empty deck raises error"""
+    deck.order = []
+    with pytest.raises(AttributeError):
+        deck.deal()
 
 def test_deal_not_int(deck):
     """not passing int raises error"""

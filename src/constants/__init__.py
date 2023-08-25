@@ -1,3 +1,3 @@
 """modules in constants package"""
-from . import face
-from . import suit
+from .face import Face
+from .suit import Suit

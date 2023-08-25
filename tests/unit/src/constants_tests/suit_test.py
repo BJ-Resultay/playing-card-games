@@ -3,7 +3,7 @@
 # Revision History:
 #	resultay | 13-08-23 | Initial version
 
-from src.constants.suit import Suit
+from src.constants import Suit
 
 def test_values():
     """test values"""
