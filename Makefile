@@ -2,14 +2,17 @@
 # Revision History:
 #	resultay | 25-08-23 | Add documentation
 #
-## ----------------------------------------------
+##    ___  __          _____            __
+##   / _ \/ /__ ___ __/ ___/__ ________/ /
+##  / ___/ / _ `/ // / /__/ _ `/ __/ _  / 
+## /_/  /_/\_,_/\_, /\___/\_,_/_/  \_,_/  
+## ------------/___/-----------------------------
 ## help:  Show this
 ## setup: Set up virtual environment
 ## run:   Run sample
 ## test:  Run tests
 ##        TEST=/directory/or/file/for/tests
 ## lint:  Lint all python files
-##        PYLINT=/path/to/pylint
 ## clean: Remove pycaches and virtual environment
 ## ----------------------------------------------
 
