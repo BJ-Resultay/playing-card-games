@@ -16,12 +16,13 @@
 ## clean: Remove pycaches and virtual environment
 ## ----------------------------------------------
 
+PYTHONPATH = :./sample:./src
+TEST = tests
 VENV = venv
 PIP = $(VENV)/bin/pip
 PYLINT = $(VENV)/bin/pylint
 PYTEST = $(VENV)/bin/pytest
 PYTHON = $(VENV)/bin/python3
-TEST = tests
 
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
@@ -30,10 +31,10 @@ $(VENV)/bin/activate: requirements.txt
 setup: $(VENV)/bin/activate
 
 run: $(VENV)/bin/activate
-	$(PYTHON) sample/main.py
+	env PYTHONPATH=$(PYTHONPATH) $(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	$(PYTEST) --cov --cov-report=lcov --cov-branch -rP $(TEST)
+	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) --cov --cov-report=lcov --cov-branch -rP $(TEST)
 
 lint: $(VENV)/bin/activate
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)

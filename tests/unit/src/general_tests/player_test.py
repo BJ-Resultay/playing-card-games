@@ -19,70 +19,70 @@ def card():
     """fixture returns ace of spades"""
     return Card(Face.ACE, Suit.SPADE)
 
-def test_add_card(player, card):
+def test_add_card(player: Player, card: Card):
     """adds card to hand"""
     player.add_card(card)
     assert player.hand == [card]
 
-def test_add_card_error(player):
+def test_add_card_error(player: Player):
     """adding non card raises error"""
     with pytest.raises(AttributeError):
         player.add_card('not card')
 
-def test_bet_chips(player):
+def test_bet_chips(player: Player):
     """move chips to bet"""
     player.bet_chips(5)
     assert player.bet == 5.0
     assert player.chips == player.STARTING_CHIPS - 5.0
 
-def test_bet_more_chips(player):
+def test_bet_more_chips(player: Player):
     """bets accumulate"""
     player.bet_chips(5)
     player.bet_chips(5)
     assert player.bet == 10.0
 
-def test_bet_chips_not_number(player):
+def test_bet_chips_not_number(player: Player):
     """non number raises error"""
     with pytest.raises(AttributeError):
         player.bet_chips('5')
 
-def test_bet_negative_chips(player):
+def test_bet_negative_chips(player: Player):
     """negative number raises error"""
     with pytest.raises(AttributeError):
         player.bet_chips(-5)
 
-def test_bet_too_many_chips(player):
+def test_bet_too_many_chips(player: Player):
     """going over raises error"""
     with pytest.raises(AttributeError):
         player.bet_chips(player.STARTING_CHIPS + 1)
 
-def test_bet_win(player):
+def test_bet_win(player: Player):
     """winning bet increases money"""
     player.bet_chips(5)
     player.bet_win()
     assert player.chips == player.STARTING_CHIPS + 5.0
 
-def test_bet_win_not_number(player):
+def test_bet_win_not_number(player: Player):
     """non number raises error"""
     with pytest.raises(AttributeError):
         player.bet_win('car')
 
-def test_bet_win_lose_money(player):
+def test_bet_win_lose_money(player: Player):
     """win but lose money"""
     with pytest.raises(AttributeError):
         player.bet_win(0)
 
-def test_increase_stat(player):
+def test_increase_stat(player: Player):
     """stat increases by 1"""
     player.increase_stat('new_stat')
     assert player.stats['new_stat'] == 1
 
-def test_increase_invalid_stat(player):
+def test_increase_invalid_stat(player: Player):
     """invalid stat raises error"""
     with pytest.raises(AttributeError):
         player.increase_stat(1)
 
-def test_sort_hand(player, card):
+def test_sort_hand(player: Player, card: Card):
     """hand sorts cards"""
     card2 = Card(Face.KING, Suit.CLUB)
     card3 = Card('face', 'suit')

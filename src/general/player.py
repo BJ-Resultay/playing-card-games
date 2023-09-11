@@ -15,7 +15,7 @@ class Player():
     def __init__(self, name: str):
         self.bet = 0
         self.chips = self.STARTING_CHIPS
-        self.hand = []
+        self.hand: list[Card] = []
         self.name = name
         self.stats = {}
 

@@ -13,7 +13,7 @@ class Deck():
     """class models deck of playing cards"""
     def __init__(self, extra_cards: list[Card] = None) -> None:
         self.face_down = True
-        self.order = [None] * 52
+        self.order: list[Card] = [None] * 52
 
         # A-K Hearts
         # A-K Clubs
