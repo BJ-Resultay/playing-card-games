@@ -24,6 +24,7 @@ class Player():
         if not isinstance(card, Card):
             raise AttributeError('only add cards to hand')
         self.hand.append(card)
+        self.sort_hand()
 
     def bet_chips(self, chips: float) -> None:
         """function moves chips to bet"""
@@ -43,10 +44,9 @@ class Player():
         if not isinstance(multiplier, (float, int)):
             raise AttributeError('multiplier must be positive number')
         multiplier = float(multiplier)
-        if multiplier < 1:
-            raise AttributeError('multiplier must be at least 1.0')
+        if multiplier < 0:
+            raise AttributeError('multiplier must be at least 0')
         self.chips += round(self.bet * multiplier, 2)
-        self.bet = 0
 
     def increase_stat(self, stat: str) -> None:
         """function increases statistic"""

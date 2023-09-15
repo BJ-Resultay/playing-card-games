@@ -10,12 +10,12 @@ from src.general.card import Card
 from src.general.player import Player
 
 @pytest.fixture()
-def player():
+def player() -> Player:
     """fixture returns player"""
     return Player('René Lavand')
 
 @pytest.fixture()
-def card():
+def card() -> Card:
     """fixture returns ace of spades"""
     return Card(Face.ACE, Suit.SPADE)
 
@@ -70,7 +70,7 @@ def test_bet_win_not_number(player: Player):
 def test_bet_win_lose_money(player: Player):
     """win but lose money"""
     with pytest.raises(AttributeError):
-        player.bet_win(0)
+        player.bet_win(-1)
 
 def test_increase_stat(player: Player):
     """stat increases by 1"""
