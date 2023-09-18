@@ -6,7 +6,6 @@ load-plugins =
 
 [MESSAGES CONTROL]
 disable =
-	unused-import,
 	import-error,
 	redefined-outer-name
 
