@@ -1,7 +1,6 @@
 __pycache__/
 .coverage
 .vscode/
-coverage.lcov
 playing-card-games.code-workspace
 venv/
 **.swp

@@ -17,9 +17,11 @@
 ## ----------------------------------------------
 
 PYTHONPATH = :./sample:./src
+SOURCE = src
 TEST = tests
 VENV = venv
 PIP = $(VENV)/bin/pip
+COVERAGE = $(VENV)/bin/coverage
 PYLINT = $(VENV)/bin/pylint
 PYTEST = $(VENV)/bin/pytest
 PYTHON = $(VENV)/bin/python3
@@ -34,7 +36,11 @@ run: $(VENV)/bin/activate
 	env PYTHONPATH=$(PYTHONPATH) $(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) --cov --cov-report=lcov --cov-branch -rP $(TEST)
+	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) --cov --cov-branch -rP $(TEST)
+
+coverage: $(VENV)/bin/activate
+	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
+	coverage report
 
 lint: $(VENV)/bin/activate
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
