@@ -4,9 +4,9 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
-from src.constants import BLACKJACK
 from src.constants import Face
-from src.constants.exceptions import BlackjackError
+from src.constants.blackjack import BLACKJACK
+from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.general.card import Card
 
@@ -136,17 +136,277 @@ class TestDoubleDown():
         with pytest.raises(BlackjackError):
             player.double_down(ace)
 
-def should_split(face: Face, mask: list[int]):
-    """test_should_split helper"""
-    player = BlackjackPlayer('new')
-    card = Card(face, None)
-    player.hit(card)
-    player.hit(card)
-    for i in range(2, 12):
-        if i in mask:
-            assert player.should_split(i)
-        else:
-            assert not player.should_split(i)
+class TestSplit():
+    """test split related functions"""
+    should_not_split_param = [
+        pytest.param(face, [])
+        for face in [Face.TEN, Face.FIVE, Face.JACK, Face.KING, Face.QUEEN]
+    ]
+
+    @pytest.mark.parametrize(
+        'face, mask',
+        [
+            (Face.ACE, range(2, 12)),
+            (Face.EIGHT, range(2, 12)),
+            (Face.FOUR, [5, 6]),
+            (Face.NINE, list(range(2, 7)) + [8, 9]),
+            (Face.SEVEN, range(2, 8)),
+            (Face.SIX, range(2, 7)),
+            (Face.THREE, range(2, 8)),
+            (Face.TWO, range(2, 8)),
+        ] + should_not_split_param
+    )
+    def test_should_split(
+        self,
+        face: Face,
+        mask: list[int],
+        player: BlackjackPlayer,
+    ):
+        """player should split"""
+        # Always split As
+        # 9s splits against dealer 2 through 9, not 7
+        # Always split 8s
+        # 7s splits against dealer 2 through 7
+        # 6s splits against dealer 2 through 6
+        # 4s splits against dealer 5 and 6
+        # 3s splits against dealer 2 through 7
+        # 2s splits against dealer 2 through 7
+        card = Card(face, None)
+        player.hit(card)
+        player.hit(card)
+        for i in range(2, 12):
+            if i in mask:
+                assert player.should_split(i)
+            else:
+                assert not player.should_split(i)
+
+    def test_can_split_true(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can split"""
+        player.hit(ace)
+        player.hit(ace)
+        assert player.can_split()
+
+    def test_can_split_not_two_false(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can not split not 2 cards"""
+        player.hit(ace)
+        assert not player.can_split()
+        player.hit(ace)
+        player.hit(ace)
+        assert not player.can_split()
+
+    def test_can_split_different_cards(
+        self,
+        ace: Card,
+        non_ace: Card,
+        player: BlackjackPlayer,
+    ):
+        """player cannot split different cards"""
+        player.hit(ace)
+        player.hit(non_ace)
+        assert not player.can_split()
+
+    def test_can_split_too_poor(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player cannot split without bet"""
+        player.hit(ace)
+        player.hit(ace)
+        player.bet_chips(player.STARTING_CHIPS)
+        assert not player.can_split()
+
+    def test_split(
+        self,
+        ace: Card,
+        non_ace: Card,
+        player: BlackjackPlayer,
+    ):
+        """player splits"""
+        player.bet_chips(5)
+        player.hit(ace)
+        player.hit(ace)
+        player.split(non_ace, non_ace)
+        assert len(player.hands) == 2
+        assert ace in player.hand
+        assert non_ace in player.hand
+        assert ace in player.hands[-1]
+        assert non_ace in player.hands[-1]
+        assert player.chips == player.STARTING_CHIPS - 5 * 2
+
+    def test_split_error(self, player: BlackjackPlayer):
+        """player splits with too few cards raises error"""
+        with pytest.raises(BlackjackError):
+            player.split(None, None)
+
+class TestStand():
+    """test stand related functions"""
+    def test_can_stand_true(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can stand"""
+        player.hit(ace)
+        player.hit(ace)
+        assert player.can_stand()
+
+    def test_can_stand_false(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player cannot stand"""
+        assert not player.can_stand()
+        player.hit(ace)
+        assert not player.can_stand()
+
+    def test_should_stand18(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should not stand with soft 18 against dealer 9 through Ace"""
+        player.hit(ace)
+        ace.points = 18
+        for i in range(2, 9):
+            assert player.should_stand(i)
+        for i in range(9, 12):
+            assert not player.should_stand(i)
+
+    def test_should_stand(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should stand with 17+"""
+        player.hit(non_ace)
+        for i in range(17, 22):
+            non_ace.points = i
+            for j in range(9, 12):
+                assert player.should_stand(j)
+
+    def test_should_not_stand(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should not stand with 16-"""
+        player.hit(non_ace)
+        for i in range(4, 17):
+            non_ace.points = i
+            for j in range(9, 12):
+                assert not player.should_stand(j)
+
+    def test_stand(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player stands"""
+        player.hit(non_ace)
+        player.hit(non_ace)
+        player.stand()
+        assert player.hand.end
+
+    def test_stand_error(self, player: BlackjackPlayer):
+        """player stand with too few cards raises error"""
+        with pytest.raises(BlackjackError):
+            player.stand()
+
+class TestSurrender():
+    """test surrender related functions"""
+    def test_can_surrender_true(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can surrender"""
+        player.hit(ace)
+        player.hit(ace)
+        assert player.can_surrender()
+
+    def test_can_surrender_hit(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player cannot surrender after double down or hit"""
+        player.hit(ace)
+        player.hit(ace)
+        player.hit(ace)
+        assert not player.can_surrender()
+
+    def test_can_surrender_split(
+        self,
+        ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player cannot surrender after split"""
+        player.hit(ace)
+        player.hit(ace)
+        player.hands.append('some hand')
+        assert not player.can_surrender()
+
+    def test_should_surrender15(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should surrender with 15 against dealer 10"""
+        player.hit(non_ace)
+        non_ace.points = 15
+        assert player.should_surrender(10)
+        for i in range(2, 12):
+            if i == 10:
+                continue
+            assert not player.should_surrender(i)
+
+    def test_should_surrender16(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should surrender with 15 against dealer 9 through Ace"""
+        player.hit(non_ace)
+        non_ace.points = 16
+        for i in range(9, 12):
+            assert player.should_surrender(10)
+        for i in range(2, 9):
+            assert not player.should_surrender(i)
+
+    def test_should_not_surrender(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player should not surrender otherwise"""
+        player.hit(non_ace)
+        for i in range(4, 22):
+            if i in [15, 16]:
+                continue
+            assert not player.should_surrender(i)
+
+    def test_surrender(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player surrenders"""
+        player.bet_chips(5)
+        player.hit(non_ace)
+        player.hit(non_ace)
+        player.surrender()
+        assert player.chips == player.STARTING_CHIPS - 5.0 / 2
+        assert player.hand.end
 
 def test_blackjack_true(
     ace: Card,
@@ -193,69 +453,6 @@ def test_can_hit_false(non_ace: Card, player: BlackjackPlayer):
     player.hit(non_ace)
     assert not player.can_hit()
 
-def test_can_split_true(ace: Card, player: BlackjackPlayer):
-    """player can split"""
-    player.hit(ace)
-    player.hit(ace)
-    assert player.can_split()
-
-def test_can_split_not_two_false(ace: Card, player: BlackjackPlayer):
-    """player can not split not 2 cards"""
-    player.hit(ace)
-    assert not player.can_split()
-    player.hit(ace)
-    player.hit(ace)
-    assert not player.can_split()
-
-def test_can_split_different_cards(
-    ace: Card,
-    non_ace: Card,
-    player: BlackjackPlayer,
-):
-    """player cannot split different cards"""
-    player.hit(ace)
-    player.hit(non_ace)
-    assert not player.can_split()
-
-def test_can_split_too_poor(ace: Card, player: BlackjackPlayer):
-    """player cannot split without bet"""
-    player.hit(ace)
-    player.hit(ace)
-    player.bet_chips(player.STARTING_CHIPS)
-    assert not player.can_split()
-
-def test_can_stand_true(ace: Card, player: BlackjackPlayer):
-    """player can stand"""
-    player.hit(ace)
-    player.hit(ace)
-    assert player.can_stand()
-
-def test_can_stand_false(ace: Card, player: BlackjackPlayer):
-    """player cannot stand"""
-    assert not player.can_stand()
-    player.hit(ace)
-    assert not player.can_stand()
-
-def test_can_surrender_true(ace: Card, player: BlackjackPlayer):
-    """player can surrender"""
-    player.hit(ace)
-    player.hit(ace)
-    assert player.can_surrender()
-
-def test_can_surrender_hit(ace: Card, player: BlackjackPlayer):
-    """player cannot surrender after double down or hit"""
-    player.hit(ace)
-    player.hit(ace)
-    player.hit(ace)
-    assert not player.can_surrender()
-
-def test_can_surrender_split(ace: Card, player: BlackjackPlayer):
-    """player cannot surrender after surrender"""
-    player.hit(ace)
-    player.hit(ace)
-    player.hands.append('some hand')
-    assert not player.can_surrender()
-
 def test_discard_cards(ace: Card, player: BlackjackPlayer):
     """player discards cards"""
     player.hit(ace)
@@ -289,118 +486,3 @@ def test_increase_invalid_stat(player: BlackjackPlayer):
     """invalid stat raises error"""
     with pytest.raises(AttributeError):
         player.increase_stat(1)
-
-def test_should_split():
-    """player should split"""
-    # Always split As
-    # 9s splits against dealer 2 through 9, not 7
-    # Always split 8s
-    # 7s splits against dealer 2 through 7
-    # 6s splits against dealer 2 through 6
-    # 4s splits against dealer 5 and 6
-    # 3s splits against dealer 2 through 7
-    # 2s splits against dealer 2 through 7
-    should_split(Face.ACE, range(2, 12))
-    should_split(Face.EIGHT, range(2, 12))
-    should_split(Face.FOUR, [5, 6])
-    should_split(Face.NINE, list(range(2, 7)) + [8, 9])
-    should_split(Face.SEVEN, range(2, 8))
-    should_split(Face.SIX, range(2, 7))
-    should_split(Face.THREE, range(2, 8))
-    should_split(Face.TWO, range(2, 8))
-
-def test_should_not_split():
-    """player should not split"""
-    for face in [Face.TEN, Face.FIVE, Face.JACK, Face.KING, Face.QUEEN]:
-        should_split(face, [])
-
-def test_should_stand18(ace: Card, player: BlackjackPlayer):
-    """player should not stand with soft 18 against dealer 9 through Ace"""
-    player.hit(ace)
-    ace.points = 18
-    for i in range(2, 9):
-        assert player.should_stand(i)
-    for i in range(9, 12):
-        assert not player.should_stand(i)
-
-def test_should_stand(non_ace: Card, player: BlackjackPlayer):
-    """player should stand with 17+"""
-    player.hit(non_ace)
-    for i in range(17, 22):
-        non_ace.points = i
-        for j in range(9, 12):
-            assert player.should_stand(j)
-
-def test_should_not_stand(non_ace: Card, player: BlackjackPlayer):
-    """player should not stand with 16-"""
-    player.hit(non_ace)
-    for i in range(4, 17):
-        non_ace.points = i
-        for j in range(9, 12):
-            assert not player.should_stand(j)
-
-def test_should_surrender15(non_ace: Card, player: BlackjackPlayer):
-    """player should surrender with 15 against dealer 10"""
-    player.hit(non_ace)
-    non_ace.points = 15
-    assert player.should_surrender(10)
-    for i in range(2, 12):
-        if i == 10:
-            continue
-        assert not player.should_surrender(i)
-
-def test_should_surrender16(non_ace: Card, player: BlackjackPlayer):
-    """player should surrender with 15 against dealer 9 through Ace"""
-    player.hit(non_ace)
-    non_ace.points = 16
-    for i in range(9, 12):
-        assert player.should_surrender(10)
-    for i in range(2, 9):
-        assert not player.should_surrender(i)
-
-def test_should_not_surrender(non_ace: Card, player: BlackjackPlayer):
-    """player should not surrender otherwise"""
-    player.hit(non_ace)
-    for i in range(4, 22):
-        if i in [15, 16]:
-            continue
-        assert not player.should_surrender(i)
-
-def test_split(ace: Card, non_ace: Card, player: BlackjackPlayer):
-    """player splits"""
-    player.bet_chips(5)
-    player.hit(ace)
-    player.hit(ace)
-    player.split(non_ace, non_ace)
-    assert len(player.hands) == 2
-    assert ace in player.hand
-    assert non_ace in player.hand
-    assert ace in player.hands[-1]
-    assert non_ace in player.hands[-1]
-    assert player.chips == player.STARTING_CHIPS - 5 * 2
-
-def test_split_error(player: BlackjackPlayer):
-    """player splits with too few cards raises error"""
-    with pytest.raises(BlackjackError):
-        player.split(None, None)
-
-def test_stand(non_ace: Card, player: BlackjackPlayer):
-    """player stands"""
-    player.hit(non_ace)
-    player.hit(non_ace)
-    player.stand()
-    assert player.hand.end
-
-def test_stand_error(player: BlackjackPlayer):
-    """player stand with too few cards raises error"""
-    with pytest.raises(BlackjackError):
-        player.stand()
-
-def test_surrender(non_ace: Card, player: BlackjackPlayer):
-    """player surrenders"""
-    player.bet_chips(5)
-    player.hit(non_ace)
-    player.hit(non_ace)
-    player.surrender()
-    assert player.chips == player.STARTING_CHIPS - 5.0 / 2
-    assert player.hand.end

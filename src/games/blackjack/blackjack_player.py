@@ -12,9 +12,9 @@
 # - double down
 # - hit or stand
 
-from src.constants import BLACKJACK
 from src.constants import Face
-from src.constants.exceptions import BlackjackError
+from src.constants.blackjack import BLACKJACK
+from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.general.card import Card
 from src.general.player import Player
