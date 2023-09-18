@@ -6,15 +6,18 @@
 ##   / _ \/ /__ ___ __/ ___/__ ________/ /
 ##  / ___/ / _ `/ // / /__/ _ `/ __/ _  / 
 ## /_/  /_/\_,_/\_, /\___/\_,_/_/  \_,_/  
-## ------------/___/-----------------------------
-## help:  Show this
-## setup: Set up virtual environment
-## run:   Run sample
-## test:  Run tests
-##        TEST=/directory/or/file/for/tests
-## lint:  Lint all python files
-## clean: Remove pycaches and virtual environment
-## ----------------------------------------------
+## ------------/___/--------------------------------
+## help:     Show this
+## setup:    Set up virtual environment
+## run:      Run sample
+## test:     Run tests
+##           TEST=/directory/or/file/for/tests
+## coverage: Run tests coverage
+##           SOURCE=/directory/for/coverage
+##           TEST=/directory/or/file/for/tests
+## lint:     Lint all python files
+## clean:    Remove pycaches and virtual environment
+## -------------------------------------------------
 
 PYTHONPATH = :./sample:./src
 SOURCE = src
@@ -36,7 +39,7 @@ run: $(VENV)/bin/activate
 	env PYTHONPATH=$(PYTHONPATH) $(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) --cov --cov-branch -rP $(TEST)
+	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) -rP $(TEST)
 
 coverage: $(VENV)/bin/activate
 	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
