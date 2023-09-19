@@ -408,6 +408,11 @@ class TestSurrender():
         assert player.chips == player.STARTING_CHIPS - 5.0 / 2
         assert player.hand.end
 
+    def test_surrender_error(self, player: BlackjackPlayer):
+        """player surrenders with too few cards"""
+        with pytest.raises(BlackjackError):
+            player.surrender()
+
 def test_blackjack_true(
     ace: Card,
     non_ace: Card,

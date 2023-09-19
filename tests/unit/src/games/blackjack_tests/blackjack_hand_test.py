@@ -12,6 +12,11 @@ def hand() -> BlackjackHand:
     """fixture returns blackjack hand"""
     return BlackjackHand()
 
+def test_filled_hand(ace: Card):
+    """hand already has cards"""
+    hand = BlackjackHand([ace])
+    assert len(hand) == 1
+
 def test_bust_true(hand: BlackjackHand, non_ace: Card):
     """hand busts"""
     for _ in range(3):
