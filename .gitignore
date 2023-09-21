@@ -3,6 +3,5 @@ __pycache__/
 .vscode/
 playing-card-games.code-workspace
 venv/
-**.log
 **.swp
 
