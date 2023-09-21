@@ -27,7 +27,8 @@ class Player():
 
     def add_card(self, card: Card) -> None:
         """function adds card to hand and sorts"""
-        self.logger.info('%s added card', self.name)
+        if self.logger == logger:
+            self.logger.info('%s added card', self.name)
         if not isinstance(card, Card):
             raise AttributeError('only add cards to hand')
         self.hand.append(card)
