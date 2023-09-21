@@ -39,7 +39,7 @@ run: $(VENV)/bin/activate
 	env PYTHONPATH=$(PYTHONPATH) $(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) -rP $(TEST)
+	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) $(TEST)
 
 coverage: $(VENV)/bin/activate
 	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)

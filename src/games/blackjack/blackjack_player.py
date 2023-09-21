@@ -12,12 +12,17 @@
 # - double down
 # - hit or stand
 
+import logging.config
 from src.constants import Face
+from src.constants import LOG_CONFIG
 from src.constants.blackjack import BLACKJACK
 from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.general.card import Card
 from src.general.player import Player
+
+logging.config.fileConfig(LOG_CONFIG, disable_existing_loggers=False)
+logger = logging.getLogger(BLACKJACK)
 
 class BlackjackPlayer(Player):
     """class models blackjack player"""
@@ -63,6 +68,7 @@ class BlackjackPlayer(Player):
 
     def double_down(self, card: Card) -> None:
         """function bets and only take one hand"""
+        logger.info('%s doubled down', self.name)
         if not self.can_double_down():
             raise BlackjackError(f'cannot double down with hand {self.hand.face_values()}')
 
@@ -71,13 +77,18 @@ class BlackjackPlayer(Player):
         self.hand.end = True
         self.chips -= self.bet
 
+        if self.hand.bust():
+            logger.info('%s busted', self.name)
+
     def hit(self, card: Card) -> None:
         """function adds card to hand"""
+        logger.info('%s hit', self.name)
         if not self.can_hit():
             raise BlackjackError(f'cannot hit with hand {self.hand.face_values()}')
 
         self.add_card(card)
         if self.hand.bust():
+            logger.info('%s busted', self.name)
             self.hand.end = True
 
     def increase_stat(self, stat: str) -> None:
@@ -177,6 +188,7 @@ class BlackjackPlayer(Player):
 
     def split(self, card1: Card, card2: Card):
         """function bets and cuts hand in half"""
+        logger.info('%s split', self.name)
         if not self.can_surrender():
             raise BlackjackError(f'cannot split with hand {self.hand.face_values()}')
 
@@ -193,6 +205,7 @@ class BlackjackPlayer(Player):
 
     def stand(self) -> None:
         """function ends hand"""
+        logger.info('%s stood', self.name)
         if not self.can_stand():
             raise BlackjackError(f'cannot stand with hand {self.hand.face_values()}')
 
@@ -200,6 +213,7 @@ class BlackjackPlayer(Player):
 
     def surrender(self) -> None:
         """function cuts bet in half"""
+        logger.info('%s surrendered', self.name)
         if not self.can_surrender():
             raise BlackjackError(f'cannot surrender with hand {self.hand.face_values()}')
 

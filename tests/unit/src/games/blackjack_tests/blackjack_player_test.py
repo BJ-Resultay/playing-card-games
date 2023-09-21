@@ -23,7 +23,7 @@ class TestDoubleDown():
         mask: list[int],
     ) -> None:
         """test_should_double_down helper"""
-        player = BlackjackPlayer('new')
+        player = BlackjackPlayer('David Blaine')
         player.hit(card)
         for i in range(2, 12):
             if i in mask:
