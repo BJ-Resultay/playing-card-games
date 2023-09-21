@@ -127,6 +127,18 @@ class TestDoubleDown():
         assert player.hand.end
         assert player.chips == player.STARTING_CHIPS - 5 * 2
 
+    def test_double_down_bust(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer,
+    ):
+        """player doubled down and bust"""
+        player.bet_chips(5)
+        player.hit(non_ace)
+        player.hit(non_ace)
+        player.double_down(non_ace)
+        assert player.hand.bust()
+
     def test_double_down_error(
         self,
         ace: Card,
