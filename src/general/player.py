@@ -3,10 +3,15 @@
 # Revision History:
 #	resultay | 20-08-23 | Initial version
 
+import logging.config
 import math
 from src.constants import Face
+from src.constants import LOG_CONFIG
 from src.constants import Suit
 from src.general.card import Card
+
+logging.config.fileConfig(LOG_CONFIG, disable_existing_loggers=False)
+logger = logging.getLogger('general')
 
 class Player():
     """class models general player"""
@@ -16,11 +21,13 @@ class Player():
         self.bet = 0
         self.chips = self.STARTING_CHIPS
         self.hand: list[Card] = []
+        self.logger = logger
         self.name = name
         self.stats = {}
 
     def add_card(self, card: Card) -> None:
         """function adds card to hand and sorts"""
+        self.logger.info('%s added card', self.name)
         if not isinstance(card, Card):
             raise AttributeError('only add cards to hand')
         self.hand.append(card)
@@ -31,6 +38,7 @@ class Player():
         if not isinstance(chips, (float, int)):
             raise AttributeError('chips must be positive number')
         chips = round(float(chips), 2)
+        self.logger.info('%s bet $%d', self.name, chips)
         if chips <= 0:
             raise AttributeError('chips must be positive')
         if self.chips < chips:
@@ -46,7 +54,9 @@ class Player():
         multiplier = float(multiplier)
         if multiplier < 0:
             raise AttributeError('multiplier must be at least 0')
-        self.chips += round(self.bet * multiplier, 2)
+        winnings = round(self.bet * multiplier, 2)
+        self.logger.info('%s won $%d', self.name, winnings)
+        self.chips += winnings
 
     def increase_stat(self, stat: str) -> None:
         """function increases statistic"""
