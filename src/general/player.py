@@ -19,11 +19,22 @@ class Player():
 
     def __init__(self, name: str):
         self.bet = 0
+        """bet for winning and losing chips"""
+
         self.chips = self.STARTING_CHIPS
+        """amount player can still bet"""
+
         self.hand: list[Card] = []
+        """cards player can use"""
+
         self.logger = logger
+        """logfile handler for info"""
+
         self.name = name
+        """name to differentiate between other players"""
+
         self.stats = {}
+        """statistics keep track of milestones"""
 
     def add_card(self, card: Card) -> None:
         """function adds card to hand and sorts"""

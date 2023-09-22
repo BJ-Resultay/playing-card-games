@@ -13,7 +13,14 @@ class Deck():
     """class models deck of playing cards"""
     def __init__(self, extra_cards: list[Card] = None) -> None:
         self.face_down = True
+        """
+        intended whether cards shows face value\n
+        default hidden\n
+        NOTE: not coupled to card state themselves
+        """
+
         self.order: list[Card] = [None] * 52
+        """order of cards"""
 
         # A-K Hearts
         # A-K Clubs

@@ -15,7 +15,10 @@ class BlackjackHand(list):
         else:
             super().__init__()
         self.double = False
+        """whether bet will be doubled if wim"""
+
         self.end = False
+        """whether hand accepts cards"""
 
     def __sum(self) -> int:
         """function sums total card points"""
@@ -27,7 +30,7 @@ class BlackjackHand(list):
 
     def face_values(self) -> None:
         """function returns face values of hand"""
-        return [card.face_value() for card in self]
+        return [card.face_value() for card in self if not card.face_down]
 
     def score(self) -> int:
         """function adds up points"""

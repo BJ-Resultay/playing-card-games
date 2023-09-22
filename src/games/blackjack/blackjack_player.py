@@ -29,8 +29,17 @@ class BlackjackPlayer(Player):
     def __init__(self, name: str):
         super().__init__(name)
         self.hands: list[BlackjackHand] = [BlackjackHand()]
+        """split allows multiple hands"""
+
         self.hand: BlackjackHand = self.hands[0]
+        """cards player has"""
+
         self.logger = logger
+        """
+        logfile handler for info\n
+        default logs/blackjack.log
+        """
+
         self.stats[BLACKJACK] = {}
 
     def blackjack(self) -> bool:

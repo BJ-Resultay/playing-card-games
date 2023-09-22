@@ -19,9 +19,20 @@ class Card():
         points = 0,
     ) -> None:
         self.face = face
-        self.face_down = True # default hidden
+        """values include ace to king"""
+
+        self.face_down = True
+        """
+        whether card shows face value\n
+        default hidden
+        """
+
         self.points = points
+        """state that interacts with game rules"""
+
         self.suit = suit
+        """values include club to spade"""
+
         self._frozen = True
 
     def __eq__(self, other: Card) -> bool:
