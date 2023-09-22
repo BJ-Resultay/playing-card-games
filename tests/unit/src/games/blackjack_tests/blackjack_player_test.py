@@ -24,7 +24,7 @@ class TestDoubleDown():
     ) -> None:
         """test_should_double_down helper"""
         player = BlackjackPlayer('David Blaine')
-        player.hit(card)
+        player.add_card(card)
         for i in range(2, 12):
             if i in mask:
                 assert player.should_double_down(i)
@@ -95,8 +95,8 @@ class TestDoubleDown():
         player: BlackjackPlayer,
     ):
         """player can double down"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert player.can_double_down()
 
     def test_can_double_down_false(
@@ -106,8 +106,8 @@ class TestDoubleDown():
     ):
         """player cannot double down"""
         assert not player.can_double_down()
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         player.bet_chips(player.STARTING_CHIPS)
         assert not player.can_double_down()
 
@@ -119,8 +119,8 @@ class TestDoubleDown():
     ):
         """player doubled down"""
         player.bet_chips(5)
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         player.double_down(non_ace)
         assert non_ace in player.hand
         assert player.hand.double
@@ -134,8 +134,8 @@ class TestDoubleDown():
     ):
         """player doubled down and bust"""
         player.bet_chips(5)
-        player.hit(non_ace)
-        player.hit(non_ace)
+        player.add_card(non_ace)
+        player.add_card(non_ace)
         player.double_down(non_ace)
         assert player.hand.bust()
 
@@ -184,8 +184,8 @@ class TestSplit():
         # 3s splits against dealer 2 through 7
         # 2s splits against dealer 2 through 7
         card = Card(face, None)
-        player.hit(card)
-        player.hit(card)
+        player.add_card(card)
+        player.add_card(card)
         for i in range(2, 12):
             if i in mask:
                 assert player.should_split(i)
@@ -198,8 +198,8 @@ class TestSplit():
         player: BlackjackPlayer
     ):
         """player can split"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert player.can_split()
 
     def test_can_split_not_two_false(
@@ -208,10 +208,10 @@ class TestSplit():
         player: BlackjackPlayer
     ):
         """player can not split not 2 cards"""
-        player.hit(ace)
+        player.add_card(ace)
         assert not player.can_split()
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert not player.can_split()
 
     def test_can_split_different_cards(
@@ -221,8 +221,8 @@ class TestSplit():
         player: BlackjackPlayer,
     ):
         """player cannot split different cards"""
-        player.hit(ace)
-        player.hit(non_ace)
+        player.add_card(ace)
+        player.add_card(non_ace)
         assert not player.can_split()
 
     def test_can_split_too_poor(
@@ -231,8 +231,8 @@ class TestSplit():
         player: BlackjackPlayer
     ):
         """player cannot split without bet"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         player.bet_chips(player.STARTING_CHIPS)
         assert not player.can_split()
 
@@ -244,8 +244,8 @@ class TestSplit():
     ):
         """player splits"""
         player.bet_chips(5)
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         player.split(non_ace, non_ace)
         assert len(player.hands) == 2
         assert ace in player.hand
@@ -267,8 +267,8 @@ class TestStand():
         player: BlackjackPlayer
     ):
         """player can stand"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert player.can_stand()
 
     def test_can_stand_false(
@@ -278,7 +278,7 @@ class TestStand():
     ):
         """player cannot stand"""
         assert not player.can_stand()
-        player.hit(ace)
+        player.add_card(ace)
         assert not player.can_stand()
 
     def test_should_stand18(
@@ -287,7 +287,7 @@ class TestStand():
         player: BlackjackPlayer
     ):
         """player should not stand with soft 18 against dealer 9 through Ace"""
-        player.hit(ace)
+        player.add_card(ace)
         ace.points = 18
         for i in range(2, 9):
             assert player.should_stand(i)
@@ -300,7 +300,7 @@ class TestStand():
         player: BlackjackPlayer
     ):
         """player should stand with 17+"""
-        player.hit(non_ace)
+        player.add_card(non_ace)
         for i in range(17, 22):
             non_ace.points = i
             for j in range(9, 12):
@@ -312,7 +312,7 @@ class TestStand():
         player: BlackjackPlayer
     ):
         """player should not stand with 16-"""
-        player.hit(non_ace)
+        player.add_card(non_ace)
         for i in range(4, 17):
             non_ace.points = i
             for j in range(9, 12):
@@ -324,8 +324,8 @@ class TestStand():
         player: BlackjackPlayer
     ):
         """player stands"""
-        player.hit(non_ace)
-        player.hit(non_ace)
+        player.add_card(non_ace)
+        player.add_card(non_ace)
         player.stand()
         assert player.hand.end
 
@@ -342,8 +342,8 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player can surrender"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert player.can_surrender()
 
     def test_can_surrender_hit(
@@ -352,9 +352,9 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player cannot surrender after double down or hit"""
-        player.hit(ace)
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         assert not player.can_surrender()
 
     def test_can_surrender_split(
@@ -363,8 +363,8 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player cannot surrender after split"""
-        player.hit(ace)
-        player.hit(ace)
+        player.add_card(ace)
+        player.add_card(ace)
         player.hands.append('some hand')
         assert not player.can_surrender()
 
@@ -374,7 +374,7 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player should surrender with 15 against dealer 10"""
-        player.hit(non_ace)
+        player.add_card(non_ace)
         non_ace.points = 15
         assert player.should_surrender(10)
         for i in range(2, 12):
@@ -388,7 +388,7 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player should surrender with 15 against dealer 9 through Ace"""
-        player.hit(non_ace)
+        player.add_card(non_ace)
         non_ace.points = 16
         for i in range(9, 12):
             assert player.should_surrender(10)
@@ -401,7 +401,7 @@ class TestSurrender():
         player: BlackjackPlayer
     ):
         """player should not surrender otherwise"""
-        player.hit(non_ace)
+        player.add_card(non_ace)
         for i in range(4, 22):
             if i in [15, 16]:
                 continue
@@ -414,8 +414,8 @@ class TestSurrender():
     ):
         """player surrenders"""
         player.bet_chips(5)
-        player.hit(non_ace)
-        player.hit(non_ace)
+        player.add_card(non_ace)
+        player.add_card(non_ace)
         player.surrender()
         assert player.chips == player.STARTING_CHIPS - 5.0 / 2
         assert player.hand.end
@@ -425,14 +425,61 @@ class TestSurrender():
         with pytest.raises(BlackjackError):
             player.surrender()
 
+class TestHit():
+    """test hit related functions"""
+    def test_can_hit_true(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can hit"""
+        player.hit(non_ace)
+        player.hit(non_ace)
+        assert player.can_hit()
+
+    def test_can_hit_false(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player can hit"""
+        player.hit(non_ace)
+        player.hit(non_ace)
+        player.hit(non_ace)
+        assert not player.can_hit()
+
+    def test_hit(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player hits"""
+        player.hit(non_ace)
+        player.hit(non_ace)
+        assert not player.hand.end
+        player.hit(non_ace)
+        assert player.hand.end
+
+    def test_hit_error(
+        self,
+        non_ace: Card,
+        player: BlackjackPlayer
+    ):
+        """player cannot hit raises error"""
+        player.hit(non_ace)
+        player.hit(non_ace)
+        player.hit(non_ace)
+        with pytest.raises(BlackjackError):
+            player.hit(non_ace)
+
 def test_blackjack_true(
     ace: Card,
     non_ace: Card,
     player: BlackjackPlayer,
 ):
     """player hit blackjack"""
-    player.hit(ace)
-    player.hit(non_ace)
+    player.add_card(ace)
+    player.add_card(non_ace)
     assert player.blackjack()
 
 def test_blackjack_false(
@@ -441,9 +488,9 @@ def test_blackjack_false(
     player: BlackjackPlayer,
 ):
     """player did not hit blackjack"""
-    player.hit(ace)
-    player.hit(non_ace)
-    player.hit(non_ace)
+    player.add_card(ace)
+    player.add_card(non_ace)
+    player.add_card(non_ace)
     assert not player.blackjack()
 
 def test_blackjack_unnatural(
@@ -452,47 +499,18 @@ def test_blackjack_unnatural(
     player: BlackjackPlayer,
 ):
     """player hit blackjack after split"""
-    player.hit(ace)
-    player.hit(non_ace)
+    player.add_card(ace)
+    player.add_card(non_ace)
     player.hands.append('some hand')
     assert not player.blackjack()
 
-def test_can_hit_true(non_ace: Card, player: BlackjackPlayer):
-    """player can hit"""
-    player.hit(non_ace)
-    player.hit(non_ace)
-    assert player.can_hit()
-
-def test_can_hit_false(non_ace: Card, player: BlackjackPlayer):
-    """player can hit"""
-    player.hit(non_ace)
-    player.hit(non_ace)
-    player.hit(non_ace)
-    assert not player.can_hit()
-
 def test_discard_cards(ace: Card, player: BlackjackPlayer):
     """player discards cards"""
-    player.hit(ace)
+    player.add_card(ace)
     player.hands.append('some hand')
     player.discard_cards()
     assert len(player.hand) == 0
     assert len(player.hands) == 1
-
-def test_hit(non_ace: Card, player: BlackjackPlayer):
-    """player hits"""
-    player.hit(non_ace)
-    player.hit(non_ace)
-    assert not player.hand.end
-    player.hit(non_ace)
-    assert player.hand.end
-
-def test_hit_error(non_ace: Card, player: BlackjackPlayer):
-    """player cannot hit raises error"""
-    player.hit(non_ace)
-    player.hit(non_ace)
-    player.hit(non_ace)
-    with pytest.raises(BlackjackError):
-        player.hit(non_ace)
 
 def test_increase_stat(player: BlackjackPlayer):
     """stat increases by 1"""
