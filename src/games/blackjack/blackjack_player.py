@@ -102,7 +102,7 @@ class BlackjackPlayer(Player):
             self.hand.end = True
 
     def increase_stat(self, stat: str) -> None:
-        """function increases blackjack statistic"""
+        """override: increases blackjack statistic"""
         if not isinstance(stat, str):
             raise AttributeError('stat must be string')
         try:

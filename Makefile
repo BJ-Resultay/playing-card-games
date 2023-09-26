@@ -36,10 +36,10 @@ $(VENV)/bin/activate: requirements.txt
 setup: $(VENV)/bin/activate
 
 run: $(VENV)/bin/activate
-	env PYTHONPATH=$(PYTHONPATH) $(PYTHON) sample/main.py
+	$(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
-	env PYTHONPATH=$(PYTHONPATH) $(PYTEST) $(TEST)
+	$(PYTEST) $(TEST)
 
 coverage: $(VENV)/bin/activate
 	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
