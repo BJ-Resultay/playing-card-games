@@ -19,7 +19,6 @@
 ## clean:    Remove pycaches and virtual environment
 ## -------------------------------------------------
 
-PYTHONPATH = :./sample:./src
 SOURCE = src
 TEST = tests
 VENV = venv
