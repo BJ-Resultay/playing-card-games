@@ -6,6 +6,7 @@
 import pytest
 from src.constants import Face
 from src.constants import Suit
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general.card import Card
 
 @pytest.fixture()
@@ -21,3 +22,8 @@ def non_ace() -> Card:
     card = Card(Face.QUEEN, Suit.HEART, 10)
     card.flip()
     return card
+
+@pytest.fixture()
+def deck() -> BlackjackDeck:
+    """fixture returns blackjack deck"""
+    return BlackjackDeck()

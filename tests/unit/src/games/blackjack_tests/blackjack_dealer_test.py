@@ -3,8 +3,11 @@
 # Revision History:
 #	resultay | 25-09-23 | Initial version
 
+from pytest_mock import MockerFixture
 import pytest
+from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_dealer import BlackjackDealer
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general.card import Card
 
 @pytest.fixture()
@@ -95,3 +98,43 @@ def test_sort_hand(
     non_ace.flip()
     dealer.sort_hand()
     assert dealer.hand[-1] == non_ace
+
+def test_turn(
+    ace: Card,
+    dealer: BlackjackDealer,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+):
+    """dealer hits then stands"""
+    mocker.patch.object(dealer, 'can_stand', side_effect = [False, True, True])
+    mocker.patch.object(dealer, 'can_hit', return_value = True)
+    mocker.patch.object(deck, 'deal', return_value = ace)
+    hit = mocker.patch.object(dealer, 'hit')
+    stand = mocker.spy(dealer, 'stand')
+
+    assert not ace.face_down
+    dealer.turn(deck)
+    hit.assert_called_once_with(ace)
+    stand.assert_called_once()
+    assert ace.face_down
+
+def test_turn_error(
+    dealer: BlackjackDealer,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+):
+    """dealer hits then stands"""
+    mocker.patch.object(dealer, 'can_stand', return_value = False)
+    mocker.patch.object(dealer, 'can_hit', return_value = False)
+
+    with pytest.raises(BlackjackError):
+        dealer.turn(deck)
+
+def test_turn_flip(dealer: BlackjackDealer, deck: BlackjackDeck):
+    """dealer hits then stands"""
+    dealer.hand.end = True
+    deck.flip()
+    assert not deck.face_down
+
+    dealer.turn(deck)
+    assert deck.face_down

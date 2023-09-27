@@ -6,6 +6,8 @@
 import math
 from src.constants import Face
 from src.constants import Suit
+from src.constants.blackjack import BlackjackError
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.general.card import Card
 
@@ -58,3 +60,18 @@ class BlackjackDealer(BlackjackPlayer):
             return suit * 13 + face
 
         self.hand.sort(key = face_value_to_int)
+
+    def turn(self, deck: BlackjackDeck):
+        """function decides dealer's decisions for their turn"""
+        if not deck.face_down:
+            self.logger.warning('deck was not face down')
+            deck.flip()
+        while not self.hand.end:
+            if self.can_stand():
+                self.stand()
+            elif self.can_hit():
+                card = deck.deal()
+                card.flip()
+                self.hit(card)
+            else:
+                raise BlackjackError('dealer cannot hit or stand')

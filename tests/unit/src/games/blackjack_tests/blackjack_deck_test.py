@@ -3,14 +3,8 @@
 # Revision History:
 #	resultay | 19-09-23 | Initial version
 
-import pytest
 from src.constants import Face
 from src.games.blackjack.blackjack_deck import BlackjackDeck
-
-@pytest.fixture()
-def deck():
-    """fixture returns blackjack deck"""
-    return BlackjackDeck()
 
 def test_card_points(deck: BlackjackDeck):
     """points are correct"""
