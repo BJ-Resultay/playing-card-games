@@ -1,14 +1,13 @@
 """modules in blackjack package"""
-from . import blackjack_dealer
-from . import blackjack_deck
-from . import blackjack_hand
-from . import blackjack_player
+import logging.config
+from src.constants import LOG_CONFIG
+
 from .main import main
 
+logging.config.fileConfig(LOG_CONFIG, disable_existing_loggers=False)
+LOGGER = logging.getLogger(__name__)
+"""logger for blackjack classes"""
+
 __all__ = [
-    'blackjack_dealer',
-    'blackjack_deck',
-    'blackjack_hand',
-    'blackjack_player',
     'main',
 ]

@@ -6,7 +6,7 @@
 import math
 from src.constants import Face
 from src.constants import Suit
-from src.constants.general import LOGGER
+from src.general import LOGGER
 from src.general.card import Card
 
 class Player():

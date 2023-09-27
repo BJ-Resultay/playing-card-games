@@ -13,7 +13,7 @@
 # - hit or stand
 
 from src.constants import Face
-from src.constants.blackjack import LOGGER
+from src.games.blackjack import LOGGER
 from src.constants.blackjack import BLACKJACK
 from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_hand import BlackjackHand
