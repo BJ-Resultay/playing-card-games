@@ -12,17 +12,13 @@
 # - double down
 # - hit or stand
 
-import logging.config
 from src.constants import Face
-from src.constants import LOG_CONFIG
+from src.constants.blackjack import LOGGER
 from src.constants.blackjack import BLACKJACK
 from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.general.card import Card
 from src.general.player import Player
-
-logging.config.fileConfig(LOG_CONFIG, disable_existing_loggers=False)
-logger = logging.getLogger(BLACKJACK)
 
 class BlackjackPlayer(Player):
     """class models blackjack player"""
@@ -34,7 +30,7 @@ class BlackjackPlayer(Player):
         self.hand: BlackjackHand = self.hands[0]
         """cards player has"""
 
-        self.logger = logger
+        self.logger = LOGGER
         """
         logfile handler for info\n
         default logs/blackjack.log

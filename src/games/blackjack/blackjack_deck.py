@@ -4,6 +4,7 @@
 #	resultay | 28-08-23 | Initial version
 
 from src.constants import Face
+from src.constants.blackjack import LOGGER
 from src.general.deck import Deck
 
 class BlackjackDeck(Deck):
@@ -26,6 +27,7 @@ class BlackjackDeck(Deck):
 
     def __init__(self) -> None:
         super().__init__()
+        self.logger = LOGGER
 
         for card in self.order:
             card.points = self.FACE_TO_POINTS[card.face]

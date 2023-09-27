@@ -3,15 +3,11 @@
 # Revision History:
 #	resultay | 20-08-23 | Initial version
 
-import logging.config
 import math
 from src.constants import Face
-from src.constants import LOG_CONFIG
 from src.constants import Suit
+from src.constants.general import LOGGER
 from src.general.card import Card
-
-logging.config.fileConfig(LOG_CONFIG, disable_existing_loggers=False)
-logger = logging.getLogger('general')
 
 class Player():
     """class models general player"""
@@ -27,7 +23,7 @@ class Player():
         self.hand: list[Card] = []
         """cards player can use"""
 
-        self.logger = logger
+        self.logger = LOGGER
         """logfile handler for info"""
 
         self.name = name
@@ -38,7 +34,7 @@ class Player():
 
     def add_card(self, card: Card) -> None:
         """function adds card to hand and sorts"""
-        if self.logger == logger:
+        if self.logger == LOGGER:
             self.logger.info('%s added card', self.name)
         if not isinstance(card, Card):
             raise AttributeError('only add cards to hand')

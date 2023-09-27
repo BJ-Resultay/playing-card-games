@@ -7,6 +7,7 @@ from __future__ import annotations
 import random
 from src.constants import Face
 from src.constants import Suit
+from src.constants.general import LOGGER
 from src.general.card import Card
 
 class Deck():
@@ -18,6 +19,9 @@ class Deck():
         default hidden\n
         NOTE: not coupled to card state themselves
         """
+
+        self.logger = LOGGER
+        """logfile handler for info"""
 
         self.order: list[Card] = [None] * 52
         """order of cards"""
@@ -45,10 +49,12 @@ class Deck():
 
     def __mul__(self, other: int) -> Deck:
         self.order *= other
+        self.logger.info('deck is %d cards large', len(self.order))
         return self
 
     def __rmul__(self, other: int) -> Deck:
         self.order *= other
+        self.logger.info('deck is %d cards large', len(self.order))
         return self
 
     def add_card(self, card: Card) -> None:
@@ -67,7 +73,9 @@ class Deck():
         length = len(self.order)
         if position not in range(-length, length):
             raise AttributeError(f'position not in range {length}')
-        return self.order.pop(position)
+        card = self.order.pop(position)
+        self.logger.debug('dealt %s', card.face_value())
+        return card
 
     def face_values(self) -> None:
         """function returns face values of entire deck"""
