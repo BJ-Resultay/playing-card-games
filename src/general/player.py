@@ -5,8 +5,8 @@
 
 import math
 from src.general import Face
-from src.general import Suit
 from src.general import LOGGER
+from src.general import Suit
 from src.general.card import Card
 
 class Player():
