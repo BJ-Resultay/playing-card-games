@@ -5,8 +5,8 @@
 
 import pytest
 from src.general import Face
-from src.constants.blackjack import BLACKJACK
-from src.constants.blackjack import BlackjackError
+from src.games.blackjack.constants import BLACKJACK
+from src.games.blackjack.constants import BlackjackError
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.general.card import Card
 

@@ -6,7 +6,7 @@
 import math
 from src.general import Face
 from src.general import Suit
-from src.constants.blackjack import BlackjackError
+from src.games.blackjack.constants import BlackjackError
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.general.card import Card

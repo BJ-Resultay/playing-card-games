@@ -5,7 +5,7 @@
 
 from pytest_mock import MockerFixture
 import pytest
-from src.constants.blackjack import BlackjackError
+from src.games.blackjack.constants import BlackjackError
 from src.games.blackjack.blackjack_dealer import BlackjackDealer
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general.card import Card

@@ -14,8 +14,8 @@
 
 from src.general import Face
 from src.games.blackjack import LOGGER
-from src.constants.blackjack import BLACKJACK
-from src.constants.blackjack import BlackjackError
+from src.games.blackjack.constants import BLACKJACK
+from src.games.blackjack.constants import BlackjackError
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.general.card import Card
 from src.general.player import Player
