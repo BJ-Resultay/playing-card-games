@@ -3,7 +3,7 @@
 # Revision History:
 #	resultay | 28-08-23 | Initial version
 
-from src.constants import Face
+from src.general import Face
 from src.games.blackjack import LOGGER
 from src.general.deck import Deck
 

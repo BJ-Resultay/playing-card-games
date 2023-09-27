@@ -4,8 +4,8 @@
 #	resultay | 21-09-23 | Initial version
 
 import math
-from src.constants import Face
-from src.constants import Suit
+from src.general import Face
+from src.general import Suit
 from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer

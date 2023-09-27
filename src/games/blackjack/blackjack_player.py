@@ -12,7 +12,7 @@
 # - double down
 # - hit or stand
 
-from src.constants import Face
+from src.general import Face
 from src.games.blackjack import LOGGER
 from src.constants.blackjack import BLACKJACK
 from src.constants.blackjack import BlackjackError

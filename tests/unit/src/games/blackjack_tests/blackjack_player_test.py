@@ -4,7 +4,7 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
-from src.constants import Face
+from src.general import Face
 from src.constants.blackjack import BLACKJACK
 from src.constants.blackjack import BlackjackError
 from src.games.blackjack.blackjack_player import BlackjackPlayer

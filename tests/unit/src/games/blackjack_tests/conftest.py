@@ -4,8 +4,8 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
-from src.constants import Face
-from src.constants import Suit
+from src.general import Face
+from src.general import Suit
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general.card import Card
 

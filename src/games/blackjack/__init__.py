@@ -1,6 +1,6 @@
 """modules in blackjack package"""
 import logging.config
-from src.constants import LOG_CONFIG
+from src.general import LOG_CONFIG
 
 from .main import main
 

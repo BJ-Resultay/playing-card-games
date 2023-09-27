@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 from collections.abc import Iterable
-from src.constants import Face
+from src.general import Face
 
 class BlackjackHand(list):
     """class models blackjack hand"""

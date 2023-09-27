@@ -3,7 +3,7 @@
 # Revision History:
 #	resultay | 13-08-23 | Initial version
 
-from src.constants import Face
+from src.general import Face
 
 def test_values():
     """test values"""

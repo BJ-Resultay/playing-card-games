@@ -5,8 +5,8 @@
 
 from __future__ import annotations
 import random
-from src.constants import Face
-from src.constants import Suit
+from src.general import Face
+from src.general import Suit
 from src.general import LOGGER
 from src.general.card import Card
 

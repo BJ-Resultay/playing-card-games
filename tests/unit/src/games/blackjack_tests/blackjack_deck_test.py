@@ -3,7 +3,7 @@
 # Revision History:
 #	resultay | 19-09-23 | Initial version
 
-from src.constants import Face
+from src.general import Face
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 
 def test_card_points(deck: BlackjackDeck):
