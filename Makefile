@@ -19,6 +19,7 @@
 ## clean:    Remove pycaches and virtual environment
 ## -------------------------------------------------
 
+OPTIONS =
 SOURCE = src
 TEST = tests
 VENV = venv
@@ -38,10 +39,18 @@ run: $(VENV)/bin/activate
 	$(PYTHON) sample/main.py
 
 test: $(VENV)/bin/activate
+ifdef OPTIONS
+	$(PYTEST) $(OPTIONS) $(TEST)
+else
 	$(PYTEST) $(TEST)
+endif
 
 coverage: $(VENV)/bin/activate
+ifdef OPTIONS
+	$(COVERAGE) run --source=$(SOURCE) $(OPTIONS) -m pytest $(TEST)
+else
 	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
+endif
 	coverage report
 
 lint: $(VENV)/bin/activate
