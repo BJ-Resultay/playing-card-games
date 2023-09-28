@@ -47,6 +47,7 @@ class Player():
         Raises:
             AttributeError: only add cards to hand
         """
+        # NOTE: covered in other tests
         if self.logger == LOGGER:
             self.logger.info('%s added card', self.name)
         if not isinstance(card, Card):
