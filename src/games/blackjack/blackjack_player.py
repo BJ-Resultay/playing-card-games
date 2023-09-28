@@ -23,6 +23,10 @@ from src.general.player import Player
 class BlackjackPlayer(Player):
     """class models blackjack player"""
     def __init__(self, name: str):
+        """
+        Args:
+            name (str): distinguish players in human readable format
+        """
         super().__init__(name)
         self.hands: list[BlackjackHand] = [BlackjackHand()]
         """split allows multiple hands"""
@@ -39,32 +43,56 @@ class BlackjackPlayer(Player):
         self.stats[BLACKJACK] = {}
 
     def blackjack(self) -> bool:
-        """function checks for blackjack"""
+        """function checks for blackjack
+
+        Returns:
+            bool: if player has blackjack
+        """
         return (self.hand.score() == 21
                 and len(self.hand) == 2
                 and len(self.hands) == 1)
 
     def can_double_down(self) -> bool:
-        """function checks if player can double down"""
+        """function checks if player can double down
+
+        Returns:
+            bool: if player can double down
+        """
         return (len(self.hand) == 2
                 and self.chips >= self.bet)
 
     def can_hit(self) -> bool:
-        """function checks if player can hit"""
+        """function checks if player can hit
+
+        Returns:
+            bool: if player can hit
+        """
         return not self.hand.bust()
 
     def can_split(self) -> bool:
-        """function checks if player can split"""
+        """function checks if player can split
+
+        Returns:
+            bool: if player can split
+        """
         return (len(self.hand) == 2
                 and self.hand[0].face == self.hand[1].face
                 and self.chips >= self.bet)
 
     def can_stand(self) -> bool:
-        """function checks if player can stand"""
+        """function checks if player can stand
+
+        Returns:
+            bool: if player can stand
+        """
         return len(self.hand) >= 2
 
     def can_surrender(self) -> bool:
-        """function checks if player can surrender"""
+        """function checks if player can surrender
+
+        Returns:
+            bool: if player can surrender
+        """
         return len(self.hands) == 1 and len(self.hand) == 2
 
     def discard_cards(self) -> None:
@@ -73,7 +101,14 @@ class BlackjackPlayer(Player):
         self.hand = self.hands[0]
 
     def double_down(self, card: Card) -> None:
-        """function bets and only take one hand"""
+        """function bets and only take one hand
+
+        Args:
+            card (Card): card hit
+
+        Raises:
+            BlackjackError: cannot double down with hand
+        """
         self.logger.info('%s doubled down', self.name)
         if not self.can_double_down():
             raise BlackjackError(f'cannot double down with hand {self.hand.face_values()}')
@@ -87,7 +122,14 @@ class BlackjackPlayer(Player):
             self.logger.info('%s busted', self.name)
 
     def hit(self, card: Card) -> None:
-        """function adds card to hand"""
+        """function adds card to hand
+
+        Args:
+            card (Card): card hit
+
+        Raises:
+            BlackjackError: cannot hit with hand
+        """
         self.logger.info('%s hit', self.name)
         if not self.can_hit():
             raise BlackjackError(f'cannot hit with hand {self.hand.face_values()}')
@@ -98,7 +140,14 @@ class BlackjackPlayer(Player):
             self.hand.end = True
 
     def increase_stat(self, stat: str) -> None:
-        """override: increases blackjack statistic"""
+        """override: increases blackjack statistic
+
+        Args:
+            stat (str): stat to inc
+
+        Raises:
+            AttributeError: stat must be string
+        """
         if not isinstance(stat, str):
             raise AttributeError('stat must be string')
         try:
@@ -107,7 +156,14 @@ class BlackjackPlayer(Player):
             self.stats[BLACKJACK][stat] = 1
 
     def should_double_down(self, dealer_score: int) -> bool:
-        """function checks whether to double down"""
+        """function checks whether to double down
+
+        Args:
+            dealer_score (int): face up card
+
+        Returns:
+            bool: if bot should double down
+        """
         # Soft 19 doubles against dealer 6
         # Soft 18 doubles against dealer 2 through 6
         # Soft 17 doubles against dealer 3 through 6
@@ -142,7 +198,14 @@ class BlackjackPlayer(Player):
         return False
 
     def should_split(self, dealer_score: int) -> bool:
-        """function checks whether to split"""
+        """function checks whether to split
+
+        Args:
+            dealer_score (int): face up card
+
+        Returns:
+            bool: if bot should split
+        """
         # Always split As
         # 9s splits against dealer 2 through 9, not 7
         # Always split 8s
@@ -169,7 +232,14 @@ class BlackjackPlayer(Player):
         return False
 
     def should_stand(self, dealer_score: int) -> bool:
-        """function checks whether to stand"""
+        """function checks whether to stand
+
+        Args:
+            dealer_score (int): face up card
+
+        Returns:
+            bool: if bot should stand
+        """
         # Soft 18 hits against dealer 9 through Ace if not double
         # 17+ always stands
         score = self.hand.score()
@@ -182,7 +252,14 @@ class BlackjackPlayer(Player):
         return False
 
     def should_surrender(self, dealer_score: int) -> bool:
-        """function checks whether to surrender"""
+        """function checks whether to surrender
+
+        Args:
+            dealer_score (int): face up card
+
+        Returns:
+            bool: if bot should surrender
+        """
         # 16 surrenders against dealer 9 through Ace
         # 15 surrenders against dealer 10
         score = self.hand.score()
@@ -193,7 +270,15 @@ class BlackjackPlayer(Player):
         return False
 
     def split(self, card1: Card, card2: Card):
-        """function bets and cuts hand in half"""
+        """function bets and cuts hand in half
+
+        Args:
+            card1 (Card): card hit current hand
+            card2 (Card): card hit other hand
+
+        Raises:
+            BlackjackError: cannot split with hand
+        """
         self.logger.info('%s split', self.name)
         if not self.can_surrender():
             raise BlackjackError(f'cannot split with hand {self.hand.face_values()}')
@@ -210,7 +295,11 @@ class BlackjackPlayer(Player):
         self.chips -= self.bet
 
     def stand(self) -> None:
-        """function ends hand"""
+        """function ends hand
+
+        Raises:
+            BlackjackError: cannot stand with hand
+        """
         self.logger.info('%s stood', self.name)
         if not self.can_stand():
             raise BlackjackError(f'cannot stand with hand {self.hand.face_values()}')
@@ -218,7 +307,11 @@ class BlackjackPlayer(Player):
         self.hand.end = True
 
     def surrender(self) -> None:
-        """function cuts bet in half"""
+        """function cuts bet in half
+
+        Raises:
+            BlackjackError: cannot surrender with hand
+        """
         self.logger.info('%s surrendered', self.name)
         if not self.can_surrender():
             raise BlackjackError(f'cannot surrender with hand {self.hand.face_values()}')

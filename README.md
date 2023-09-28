@@ -10,8 +10,6 @@ It will (hopefully) include various games.
 
 ## Games
 
-TODO:
-
 - [ ] blackjack
 
 ## Notes
@@ -56,3 +54,7 @@ This setup allows me to fix bad coding practices while writing code.
 
     This automatically sets my cursor at the correct indentation.
     Though I am not keen on hanging indents very much.
+
+- Todo Tree
+
+    This keeps tabs on various notes in the code.

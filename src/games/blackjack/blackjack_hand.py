@@ -4,28 +4,41 @@
 #	resultay | 13-09-23 | Initial version
 
 from __future__ import annotations
-from collections.abc import Iterable
 from src.general import Face
+from src.general.card import Card
 
 class BlackjackHand(list):
     """class models blackjack hand"""
-    def __init__(self, iterable: Iterable = None):
+    def __init__(self, iterable: list[Card] = None):
+        """
+        Args:
+            iterable (list[Card], optional): cards already in hand
+        """
         if iterable is not None:
             super().__init__(iterable)
         else:
             super().__init__()
         self.double = False
-        """whether bet will be doubled if wim"""
+        """whether bet will be doubled if win"""
 
         self.end = False
         """whether hand accepts cards"""
 
     def __sum(self) -> int:
-        """function sums total card points"""
+        """function sums total card points\n
+        ignore face down crads
+
+        Returns:
+            int: sum of points
+        """
         return sum(card.points if not card.face_down else 0 for card in self)
 
     def bust(self) -> bool:
-        """function score is over 21"""
+        """function score is over 21
+
+        Returns:
+            bool: if hand bust
+        """
         return self.score() > 21
 
     def face_values(self) -> None:
@@ -33,7 +46,12 @@ class BlackjackHand(list):
         return [card.face_value() for card in self if not card.face_down]
 
     def score(self) -> int:
-        """function adds up points"""
+        """function adds up points\n
+        calculates aces points
+
+        Returns:
+            int: score
+        """
         score = self.__sum()
         if score <= 21:
             return score
@@ -47,14 +65,25 @@ class BlackjackHand(list):
         return score
 
     def soft(self) -> bool:
-        """function checks if ace is 11"""
+        """function checks if ace is 11
+
+        Returns:
+            bool: if hand is soft
+        """
         if (any(card.face == Face.ACE for card in self)
             and self.__sum() == self.score()):
             return True
         return False
 
     def split(self) -> BlackjackHand:
-        """function cuts hand in half"""
+        """function cuts hand in half
+
+        Raises:
+            IndexError: can only split hand of size 2
+
+        Returns:
+            BlackjackHand: new hand
+        """
         if not len(self) == 2:
             raise IndexError('can only split hand of size 2')
         other = BlackjackHand()

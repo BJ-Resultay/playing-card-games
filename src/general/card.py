@@ -16,8 +16,14 @@ class Card():
         self,
         face: Face,
         suit: Suit,
-        points = 0,
+        points: int = 0,
     ) -> None:
+        """
+        Args:
+            face (Face): ace to king.
+            suit (Suit): club to spade.
+            points (int, optional): interacts with game rules. Defaults to 0.
+        """
         self.face = face
         """values include ace to king"""
 
@@ -46,7 +52,11 @@ class Card():
         return super().__setattr__(attr, value)
 
     def face_value(self) -> str:
-        """function returns face value"""
+        """function returns face value
+
+        Returns:
+            str: face value of unicode characters
+        """
         return self.face.value + self.suit.value
 
     def flip(self) -> None:

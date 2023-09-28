@@ -13,11 +13,15 @@ from src.general.card import Card
 class Deck():
     """class models deck of playing cards"""
     def __init__(self, extra_cards: list[Card] = None) -> None:
+        """
+        Args:
+            extra_cards (list[Card], optional): extra cards to add to deck. Defaults to None.
+        """
         self.face_down = True
         """
         intended whether cards shows face value\n
         default hidden\n
-        NOTE: not coupled to card state themselves
+        Note: not coupled to card state themselves
         """
 
         self.logger = LOGGER
@@ -58,13 +62,29 @@ class Deck():
         return self
 
     def add_card(self, card: Card) -> None:
-        """function adds card to the bottom"""
+        """function adds card to the bottom
+
+        Args:
+            card (Card): card added to hand
+        """
         if not isinstance(card, Card):
             raise AttributeError('non cards cannot be added to the deck')
         self.order.append(card)
 
     def deal(self, position: int = 0) -> Card:
-        """function removes card from deck"""
+        """function removes card from deck
+
+        Args:
+            position (int, optional): position of card dealt. Defaults to 0.
+
+        Raises:
+            AttributeError: deck is empty
+            AttributeError: position must be integer
+            AttributeError: position not in range
+
+        Returns:
+            Card: card dealt
+        """
         # cheaters can deal any card from the deck
         if len(self.order) == 0:
             raise AttributeError('deck is empty')
@@ -82,7 +102,15 @@ class Deck():
         return [card.face_value() for card in self.order]
 
     def false_shuffle(self, indexes: list[int]) -> None:
-        """function controls cards defined at index"""
+        """function controls cards defined at index
+
+        Args:
+            indexes (list[int]): mask to order cards
+
+        Raises:
+            AttributeError: indexes must be a list
+            AttributeError: indexes cannot be larger than deck
+        """
         if not isinstance(indexes, list):
             raise AttributeError('indexes must be a list')
         if len(indexes) > len(self.order):
@@ -115,9 +143,13 @@ class Deck():
         self.reverse()
 
     def remove_cards(self, to_remove: list[Card]) -> list:
-        """
-        function removes all cards from deck with both face and suit
-        returns removed cards
+        """function removes all cards from deck with both face and suit
+
+        Args:
+            to_remove (list[Card]): mask to remove cards
+
+        Returns:
+            list: removed cards
         """
         removed_cards = [card for card in self.order if card in to_remove]
         for card in removed_cards:
@@ -130,9 +162,15 @@ class Deck():
         suit: Suit = None,
         points: int = None,
     ) -> list:
-        """
-        function removes all cards from deck with either face and suit
-        returns removed cards
+        """function removes all cards from deck with either face and suit
+
+        Args:
+            face (Face, optional): face mask. Defaults to None.
+            suit (Suit, optional): suit mask. Defaults to None.
+            points (int, optional): points mask. Defaults to None.
+
+        Returns:
+            list: removed cards
         """
         removed_cards = []
         for card in self.order:
