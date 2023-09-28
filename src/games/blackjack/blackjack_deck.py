@@ -3,9 +3,11 @@
 # Revision History:
 #	resultay | 28-08-23 | Initial version
 
-from src.games.blackjack import LOGGER
+from logging import getLogger
 from src.general import Face
 from src.general.deck import Deck
+
+LOGGER = getLogger(__name__)
 
 class BlackjackDeck(Deck):
     """class models blackjack deck"""

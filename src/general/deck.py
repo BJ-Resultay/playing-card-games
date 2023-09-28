@@ -4,11 +4,13 @@
 #	resultay | 18-08-23 | Initial version
 
 from __future__ import annotations
+from logging import getLogger
 import random
 from src.general import Face
-from src.general import LOGGER
 from src.general import Suit
 from src.general.card import Card
+
+LOGGER = getLogger(__name__)
 
 class Deck():
     """class models deck of playing cards"""

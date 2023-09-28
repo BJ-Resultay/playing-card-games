@@ -3,11 +3,13 @@
 # Revision History:
 #	resultay | 20-08-23 | Initial version
 
+from logging import getLogger
 import math
 from src.general import Face
-from src.general import LOGGER
 from src.general import Suit
 from src.general.card import Card
+
+LOGGER = getLogger(__name__)
 
 class Player():
     """class models general player"""

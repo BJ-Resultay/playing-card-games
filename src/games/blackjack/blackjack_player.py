@@ -12,13 +12,15 @@
 # - double down
 # - hit or stand
 
-from src.games.blackjack import LOGGER
+from logging import getLogger
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.games.blackjack.constants import BLACKJACK
 from src.games.blackjack.constants import BlackjackError
 from src.general import Face
 from src.general.card import Card
 from src.general.player import Player
+
+LOGGER = getLogger(__name__)
 
 class BlackjackPlayer(Player):
     """class models blackjack player"""

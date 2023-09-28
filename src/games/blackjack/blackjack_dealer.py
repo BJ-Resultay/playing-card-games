@@ -3,6 +3,7 @@
 # Revision History:
 #	resultay | 21-09-23 | Initial version
 
+from logging import getLogger
 import math
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
@@ -11,10 +12,13 @@ from src.general import Face
 from src.general import Suit
 from src.general.card import Card
 
+LOGGER = getLogger(__name__)
+
 class BlackjackDealer(BlackjackPlayer):
     """class models blackjack dealer"""
     def __init__(self):
         super().__init__('Dealer')
+        self.logger = LOGGER
 
     def can_double_down(self) -> bool:
         """override: dealer cannot double down
