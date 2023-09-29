@@ -9,3 +9,6 @@ disable =
 	import-error,
 	redefined-outer-name
 
+[SIMILARITIES]
+min-similarity-lines = 6
+

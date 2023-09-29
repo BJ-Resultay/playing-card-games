@@ -4,6 +4,7 @@
 #	resultay | 26-08-23 | Initial version
 
 from logging import getLogger
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.games.blackjack.constants import BLACKJACK, BlackjackError
 from src.general.card import Card
@@ -108,6 +109,22 @@ class BlackjackPlayer(Player):
 
         if self.hand.bust():
             self.logger.info('%s busted', self.name)
+
+    def draw(self, deck: BlackjackDeck) -> Card:
+        """function draws card from deck
+
+        Args:
+            deck (BlackjackDeck): deck player draws cards from
+
+        Returns:
+            Card: card player drew
+        """
+        if not deck.face_down:
+            self.logger.warning('deck was not face down')
+            deck.flip()
+        card = deck.deal()
+        card.flip()
+        return card
 
     def hit(self, card: Card) -> None:
         """function adds card to hand

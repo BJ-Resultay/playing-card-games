@@ -6,9 +6,13 @@
 from logging import getLogger
 from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
+from src.games.blackjack.constants import BlackjackError
 from src.general import Face
 
 LOGGER = getLogger(__name__)
+
+# https://www.youtube.com/watch?v=PljDuynF-j0
+# https://www.blackjackapprenticeship.com/blackjack-strategy-charts/
 
 class BlackjackBot(BlackjackPlayer):
     """class models blackjack player ai"""
@@ -134,17 +138,40 @@ class BlackjackBot(BlackjackPlayer):
             return True
         return False
 
-    def turn(self, deck: BlackjackDeck):
+    def turn(self, dealer_score: int, deck: BlackjackDeck):
         """function decides bot's decisions for their turn
 
         Args:
+            dealer_score (int): affects decision tree
             deck (BlackjackDeck): deck bot draws from
-        """
-        # https://www.youtube.com/watch?v=PljDuynF-j0
-        # https://www.blackjackapprenticeship.com/blackjack-strategy-charts/
 
+        Raises:
+            BlackjackError: bot has no valid moves
+        """
         # decision order:
         # - surrender
         # - split
         # - double down
         # - hit or stand
+        self.logger.info("%s's turn starts", self.name)
+        while not self.hand.end:
+            if (self.can_surrender()
+                and self.should_surrender(dealer_score)):
+                self.surrender()
+            elif (self.can_split()
+                  and self.should_split(dealer_score)):
+                card1 = self.draw(deck)
+                card2 = self.draw(deck)
+                self.split(card1, card2)
+            elif (self.can_double_down()
+                  and self.should_double_down(dealer_score)):
+                card = self.draw(deck)
+                self.double_down(card)
+            elif (self.can_stand()
+                  and self.should_stand(dealer_score)):
+                self.stand()
+            elif self.can_hit():
+                card = self.draw(deck)
+                self.hit(card)
+            else:
+                raise BlackjackError(f'{self.name} has no valid moves')

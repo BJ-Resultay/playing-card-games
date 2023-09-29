@@ -101,15 +101,12 @@ class BlackjackDealer(BlackjackPlayer):
         Raises:
             BlackjackError: dealer cannot hit or stand
         """
-        if not deck.face_down:
-            self.logger.warning('deck was not face down')
-            deck.flip()
+        self.logger.info("Dealer's turn starts")
         while not self.hand.end:
             if self.can_stand():
                 self.stand()
             elif self.can_hit():
-                card = deck.deal()
-                card.flip()
+                card = self.draw(deck)
                 self.hit(card)
             else:
                 raise BlackjackError('dealer cannot hit or stand')

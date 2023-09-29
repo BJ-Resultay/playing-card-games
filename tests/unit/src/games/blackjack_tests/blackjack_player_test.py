@@ -4,9 +4,9 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
-from src.games.blackjack.constants import BLACKJACK
-from src.games.blackjack.constants import BlackjackError
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
+from src.games.blackjack.constants import BLACKJACK, BlackjackError
 from src.general.card import Card
 
 @pytest.fixture()
@@ -320,6 +320,20 @@ def test_discard_cards(ace: Card, player: BlackjackPlayer):
     player.discard_cards()
     assert len(player.hand) == 0
     assert len(player.hands) == 1
+
+def test_draw(player: BlackjackPlayer, deck: BlackjackDeck):
+    """player draws card"""
+    card = player.draw(deck)
+    assert card.face_value() == 'A\u2665'
+
+def test_draw_flip(player: BlackjackPlayer, deck: BlackjackDeck):
+    """player flips deck face down"""
+    player.hand.end = True
+    deck.flip()
+    assert not deck.face_down
+
+    player.draw(deck)
+    assert deck.face_down
 
 def test_increase_stat(player: BlackjackPlayer):
     """stat increases by 1"""

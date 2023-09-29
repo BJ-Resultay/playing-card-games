@@ -129,12 +129,3 @@ def test_turn_error(
 
     with pytest.raises(BlackjackError):
         dealer.turn(deck)
-
-def test_turn_flip(dealer: BlackjackDealer, deck: BlackjackDeck):
-    """dealer hits then stands"""
-    dealer.hand.end = True
-    deck.flip()
-    assert not deck.face_down
-
-    dealer.turn(deck)
-    assert deck.face_down
