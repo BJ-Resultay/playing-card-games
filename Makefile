@@ -11,9 +11,11 @@
 ## setup:    Set up virtual environment
 ## run:      Run sample
 ## test:     Run tests
+##           OPTIONS='any other options'
 ##           TEST=/directory/or/file/for/tests
 ## coverage: Run tests coverage
 ##           SOURCE=/directory/for/coverage
+##           OPTIONS='any other options'
 ##           TEST=/directory/or/file/for/tests
 ## lint:     Lint all python files
 ## clean:    Remove pycaches and virtual environment
