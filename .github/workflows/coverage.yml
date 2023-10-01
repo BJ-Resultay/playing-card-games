@@ -1,0 +1,35 @@
+name: Coverage
+
+on: [push]
+
+jobs:
+  build:
+    name: Run tests & display coverage
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - "3.9"
+        - "3.11"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Switch to Current Branch
+        run: git checkout ${{ env.BRANCH }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install coverage
+          pip install pytest
+          pip install pytest-mock
+      - name: Get coverage
+        run: coverage --source=src -m pytest tests/unit
+
+      - name: Coverage comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+
