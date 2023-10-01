@@ -109,7 +109,7 @@ def test_turn(
     mocker.patch.object(dealer, 'can_stand', side_effect = [False, True, True])
     mocker.patch.object(dealer, 'can_hit', return_value = True)
     mocker.patch.object(deck, 'deal', return_value = ace)
-    hit = mocker.patch.object(dealer, 'hit')
+    hit = mocker.spy(dealer, 'hit')
     stand = mocker.spy(dealer, 'stand')
 
     assert not ace.face_down
