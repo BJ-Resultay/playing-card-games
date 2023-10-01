@@ -27,6 +27,6 @@ jobs:
           pip install pytest-mock
       - name: Get coverage
         run: |
-		  coverage run --source=src -m pytest tests/unit
+          coverage run --source=src -m pytest tests/unit
           coverage report
 
