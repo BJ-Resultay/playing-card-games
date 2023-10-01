@@ -26,7 +26,7 @@ jobs:
           pip install pytest
           pip install pytest-mock
       - name: Get coverage
-        run: coverage --source=src -m pytest tests/unit
+        run: coverage run --source=src -m pytest tests/unit
 
       - name: Coverage comment
         uses: py-cov-action/python-coverage-comment-action@v3
