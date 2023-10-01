@@ -6,6 +6,8 @@ jobs:
   build:
     name: Run tests & display coverage
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       matrix:
         python-version:
