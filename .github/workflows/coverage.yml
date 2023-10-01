@@ -6,8 +6,6 @@ jobs:
   build:
     name: Run tests & display coverage
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     strategy:
       matrix:
         python-version:
@@ -28,10 +26,7 @@ jobs:
           pip install pytest
           pip install pytest-mock
       - name: Get coverage
-        run: coverage run --source=src -m pytest tests/unit
-
-      - name: Coverage comment
-        uses: py-cov-action/python-coverage-comment-action@v3
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+		  coverage run --source=src -m pytest tests/unit
+          coverage report
 
