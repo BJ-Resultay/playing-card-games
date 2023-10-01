@@ -153,6 +153,8 @@ class BlackjackBot(BlackjackPlayer):
         # - split
         # - double down
         # - hit or stand
+        if self.hand.end:
+            pass
         hands = iter(self.hands)
         self.hand = next(hands)
         self.logger.info("%s's turn starts", self.name)
