@@ -3,8 +3,11 @@
 # Revision History:
 #	resultay | 28-09-23 | Initial version
 
+from pytest_mock import MockerFixture
 import pytest
 from src.games.blackjack.blackjack_bot import BlackjackBot
+from src.games.blackjack.blackjack_deck import BlackjackDeck
+from src.games.blackjack.constants import BlackjackError
 from src.general import Face
 from src.general.card import Card
 
@@ -192,3 +195,61 @@ def test_should_not_surrender(
         if i in [15, 16]:
             continue
         assert not bot.should_surrender(i)
+
+def test_turn(
+    ace: Card,
+    bot: BlackjackBot,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+    non_ace: Card,
+):
+    """bot splits, doubles down, and hits, then stands"""
+    mocker.patch.object(bot, 'can_surrender', return_value = False)
+    mocker.patch.object(bot, 'can_split', side_effect = [True, True, False, False, False])
+    mocker.patch.object(bot, 'can_double_down', side_effect = [True, True, False, False])
+    mocker.patch.object(bot, 'can_stand', side_effect = [False, True, True])
+    mocker.patch.object(bot, 'can_hit', return_value = True)
+    mocker.patch.object(bot, 'should_split', return_value = True)
+    mocker.patch.object(bot, 'should_double_down', return_value = True)
+    mocker.patch.object(bot, 'should_stand', return_value = True)
+    mocker.patch.object(bot, 'draw', return_value = non_ace)
+    split = mocker.spy(bot, 'split')
+    double_down = mocker.spy(bot, 'double_down')
+    hit = mocker.spy(bot, 'hit')
+    stand = mocker.spy(bot, 'stand')
+
+    bot.hand.append(ace)
+    bot.hand.append(ace)
+    bot.turn(0, deck)
+    split.assert_called_once_with(non_ace, non_ace)
+    double_down.assert_called_once_with(non_ace)
+    hit.assert_called_once_with(non_ace)
+    stand.assert_called_once()
+
+def test_turn_surrender(
+    bot: BlackjackBot,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+):
+    """bot surrenders"""
+    mocker.patch.object(bot, 'can_surrender', return_value = True)
+    mocker.patch.object(bot, 'should_surrender', return_value = True)
+    surrender = mocker.spy(bot, 'surrender')
+
+    bot.turn(0, deck)
+    surrender.assert_called_once()
+
+def test_turn_error(
+    bot: BlackjackBot,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+):
+    """bot has no moves"""
+    mocker.patch.object(bot, 'can_surrender', return_value = False)
+    mocker.patch.object(bot, 'can_split', return_value = False)
+    mocker.patch.object(bot, 'can_double_down', return_value = False)
+    mocker.patch.object(bot, 'can_stand', return_value = False)
+    mocker.patch.object(bot, 'can_hit', return_value = False)
+
+    with pytest.raises(BlackjackError):
+        bot.turn(0, deck)

@@ -171,7 +171,7 @@ class BlackjackPlayer(Player):
             BlackjackError: cannot split with hand
         """
         self.logger.info('%s split', self.name)
-        if not self.can_surrender():
+        if not self.can_split():
             raise BlackjackError(f'cannot split with hand {self.hand.face_values()}')
 
         other_hand = self.hand.split()

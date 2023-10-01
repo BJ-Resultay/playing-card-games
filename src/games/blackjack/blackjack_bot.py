@@ -153,8 +153,12 @@ class BlackjackBot(BlackjackPlayer):
         # - split
         # - double down
         # - hit or stand
+        hands = iter(self.hands)
+        self.hand = next(hands)
         self.logger.info("%s's turn starts", self.name)
-        while not self.hand.end:
+        while not self.hands[-1].end:
+            if self.hand.end:
+                self.hand = next(hands)
             if (self.can_surrender()
                 and self.should_surrender(dealer_score)):
                 self.surrender()

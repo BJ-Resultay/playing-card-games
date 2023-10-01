@@ -123,7 +123,7 @@ def test_turn_error(
     deck: BlackjackDeck,
     mocker: MockerFixture,
 ):
-    """dealer hits then stands"""
+    """dealer has no moves"""
     mocker.patch.object(dealer, 'can_stand', return_value = False)
     mocker.patch.object(dealer, 'can_hit', return_value = False)
 

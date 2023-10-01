@@ -323,14 +323,18 @@ def test_discard_cards(ace: Card, player: BlackjackPlayer):
 
 def test_draw(player: BlackjackPlayer, deck: BlackjackDeck):
     """player draws card"""
+    assert deck.face_down
     card = player.draw(deck)
     assert card.face_value() == 'A\u2665'
+    assert not card.face_down
 
 def test_draw_flip(player: BlackjackPlayer, deck: BlackjackDeck):
     """player flips deck face down"""
-    player.hand.end = True
     deck.flip()
     assert not deck.face_down
+    card = player.draw(deck)
+    assert deck.face_down
+    assert not card.face_down
 
     player.draw(deck)
     assert deck.face_down
