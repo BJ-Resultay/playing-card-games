@@ -15,7 +15,7 @@ It will (hopefully) include various games.
 ## Notes
 
 Python version used is 3.11.2.
-Python minimum version is 3.7, which allows future annotations.
+Python minimum version is 3.9, which supports type hints.
 Shell used is bash.
 
 ## Things I learned

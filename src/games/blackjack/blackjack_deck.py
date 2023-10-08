@@ -5,6 +5,7 @@
 
 from logging import getLogger
 from src.general import Face
+from src.general.card import Card
 from src.general.deck import Deck
 
 LOGGER = getLogger(__name__)
@@ -33,3 +34,16 @@ class BlackjackDeck(Deck):
 
         for card in self.order:
             card.points = self.FACE_TO_POINTS[card.face]
+
+    def draw(self) -> Card:
+        """function draws card from deck
+
+        Returns:
+            Card: card player drew
+        """
+        if not self.face_down:
+            self.logger.warning('deck was not face down')
+            self.flip()
+        card = self.deal()
+        card.flip()
+        return card

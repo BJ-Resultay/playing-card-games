@@ -212,7 +212,7 @@ def test_turn(
     mocker.patch.object(bot, 'should_split', return_value = True)
     mocker.patch.object(bot, 'should_double_down', return_value = True)
     mocker.patch.object(bot, 'should_stand', return_value = True)
-    mocker.patch.object(bot, 'draw', return_value = non_ace)
+    mocker.patch.object(deck, 'draw', return_value = non_ace)
     split = mocker.spy(bot, 'split')
     double_down = mocker.spy(bot, 'double_down')
     hit = mocker.spy(bot, 'hit')

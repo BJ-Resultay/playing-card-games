@@ -12,3 +12,21 @@ def test_card_points(deck: BlackjackDeck):
         card = deck.deal()
         assert card.face == face
         assert card.points == deck.FACE_TO_POINTS[face]
+
+def test_draw(deck: BlackjackDeck):
+    """player draws card"""
+    assert deck.face_down
+    card = deck.draw()
+    assert card.face_value() == 'A\u2665'
+    assert not card.face_down
+
+def test_draw_flip(deck: BlackjackDeck):
+    """player flips deck face down"""
+    deck.flip()
+    assert not deck.face_down
+    card = deck.draw()
+    assert deck.face_down
+    assert not card.face_down
+
+    deck.draw()
+    assert deck.face_down

@@ -164,18 +164,18 @@ class BlackjackBot(BlackjackPlayer):
                 self.surrender()
             elif (self.can_split()
                   and self.should_split(dealer_score)):
-                card1 = self.draw(deck)
-                card2 = self.draw(deck)
+                card1 = deck.draw()
+                card2 = deck.draw()
                 self.split(card1, card2)
             elif (self.can_double_down()
                   and self.should_double_down(dealer_score)):
-                card = self.draw(deck)
+                card = deck.draw()
                 self.double_down(card)
             elif (self.can_stand()
                   and self.should_stand(dealer_score)):
                 self.stand()
             elif self.can_hit():
-                card = self.draw(deck)
+                card = deck.draw()
                 self.hit(card)
             else:
                 raise BlackjackError(f'{self.name} has no valid moves')

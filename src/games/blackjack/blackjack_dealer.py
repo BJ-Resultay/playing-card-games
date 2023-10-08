@@ -106,7 +106,7 @@ class BlackjackDealer(BlackjackPlayer):
             if self.can_stand():
                 self.stand()
             elif self.can_hit():
-                card = self.draw(deck)
+                card = deck.draw()
                 self.hit(card)
             else:
                 raise BlackjackError('dealer cannot hit or stand')
