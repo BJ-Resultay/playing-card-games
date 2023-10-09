@@ -4,7 +4,6 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
-from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.games.blackjack.constants import BLACKJACK, BlackjackError
 from src.general.card import Card

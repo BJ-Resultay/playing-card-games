@@ -1,9 +1,6 @@
 [MASTER]
 fail-under = 10.0
 
-load-plugins =
-	pylint_pytest
-
 [MESSAGES CONTROL]
 disable =
 	import-error,

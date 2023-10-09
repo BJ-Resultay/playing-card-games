@@ -4,7 +4,6 @@
 #	resultay | 26-08-23 | Initial version
 
 from logging import getLogger
-from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.blackjack_hand import BlackjackHand
 from src.games.blackjack.constants import BLACKJACK, BlackjackError
 from src.general.card import Card
@@ -192,4 +191,5 @@ class BlackjackPlayer(Player):
             raise BlackjackError(f'cannot surrender with hand {self.hand.face_values()}')
 
         self.bet_win(0.5)
+        self.bet = 0
         self.hand.end = True

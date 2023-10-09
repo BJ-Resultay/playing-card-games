@@ -4,9 +4,11 @@
 #	resultay | 14-09-23 | Initial version
 
 import pytest
+from src.games.blackjack.blackjack_bot import BlackjackBot
+from src.games.blackjack.blackjack_dealer import BlackjackDealer
+from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general import Face
 from src.general import Suit
-from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.general.card import Card
 
 @pytest.fixture()
@@ -27,3 +29,13 @@ def non_ace() -> Card:
 def deck() -> BlackjackDeck:
     """fixture returns blackjack deck"""
     return BlackjackDeck()
+
+@pytest.fixture()
+def bot() -> BlackjackBot:
+    """fixture returns blackjack bot"""
+    return BlackjackBot('Shin Lim')
+
+@pytest.fixture()
+def dealer() -> BlackjackDealer:
+    """fixture returns dealer"""
+    return BlackjackDealer()

@@ -11,11 +11,6 @@ from src.games.blackjack.constants import BlackjackError
 from src.general import Face
 from src.general.card import Card
 
-@pytest.fixture()
-def bot() -> BlackjackBot:
-    """fixture returns blackjack bot"""
-    return BlackjackBot('Shin Lim')
-
 def should_double_down(
     card: Card,
     mask: list[int],

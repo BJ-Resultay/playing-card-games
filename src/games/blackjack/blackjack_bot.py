@@ -156,12 +156,12 @@ class BlackjackBot(BlackjackPlayer):
         hands = iter(self.hands)
         self.hand = next(hands)
         self.logger.info("%s's turn starts", self.name)
+        if (self.can_surrender()
+            and self.should_surrender(dealer_score)):
+            self.surrender()
         while not self.hands[-1].end:
             if self.hand.end:
                 self.hand = next(hands)
-            if (self.can_surrender()
-                and self.should_surrender(dealer_score)):
-                self.surrender()
             elif (self.can_split()
                   and self.should_split(dealer_score)):
                 card1 = deck.draw()

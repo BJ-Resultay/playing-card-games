@@ -191,4 +191,5 @@ class Deck():
 
     def shuffle(self) -> None:
         """function shuffles order of the deck"""
+        self.logger.info("Deck shuffled")
         random.shuffle(self.order)

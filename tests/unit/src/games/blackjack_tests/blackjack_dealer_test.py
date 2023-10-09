@@ -5,15 +5,10 @@
 
 from pytest_mock import MockerFixture
 import pytest
-from src.games.blackjack.constants import BlackjackError
 from src.games.blackjack.blackjack_dealer import BlackjackDealer
 from src.games.blackjack.blackjack_deck import BlackjackDeck
+from src.games.blackjack.constants import BlackjackError
 from src.general.card import Card
-
-@pytest.fixture()
-def dealer() -> BlackjackDealer:
-    """fixture returns dealer"""
-    return BlackjackDealer()
 
 def test_cannot_double_down(dealer: BlackjackDealer):
     """dealer cannot double down"""

@@ -1,6 +1,5 @@
 coverage
 pylint
-pylint-pytest
 pytest
 pytest-mock
 
