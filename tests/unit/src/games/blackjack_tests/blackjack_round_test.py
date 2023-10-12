@@ -36,7 +36,8 @@ def test_start(
     bet = mocker.patch(f'{ROUND}.bet', return_value = [])
     deal = mocker.patch(f'{ROUND}.deal')
 
-    blackjack_round.start(dealer, deck, [bot])
+    players = blackjack_round.start(dealer, deck, [bot])
+    assert players == []
     bet.assert_called_once_with([bot])
     deal.assert_called_once_with(dealer, deck, [])
 
@@ -75,6 +76,20 @@ def test_deal_error(deck: BlackjackDeck):
     """deck too small"""
     with pytest.raises(BlackjackError):
         blackjack_round.deal(None, deck, [])
+
+def test_play(
+    bot: BlackjackBot,
+    dealer: BlackjackDealer,
+    deck: BlackjackDeck,
+    mocker: MockerFixture,
+):
+    """bot and dealer takes turn"""
+    bot_turn = mocker.patch.object(bot, 'turn')
+    dealer_turn = mocker.patch.object(dealer, 'turn')
+
+    blackjack_round.play(dealer, deck, [bot])
+    bot_turn.assert_called_once_with(0, deck)
+    dealer_turn.assert_called_once_with(deck)
 
 def test_end(
     ace: Card,

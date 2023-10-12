@@ -22,17 +22,21 @@ def start(
     dealer: BlackjackDealer,
     deck: BlackjackDeck,
     players: list[BlackjackBot],
-) -> None:
+) -> list[BlackjackBot]:
     """function sets up round
 
     Args:
         dealer (BlackjackDealer): gets one face up card and once face down card
         deck (BlackjackDeck): draw cards
         players (list[BlackjackBot]): bets and gets two face up cards
+
+    Returns:
+        list[BlackjackBot]: subset of players that can bet
     """
     LOGGER.info('Round starting')
     players = bet(players)
     deal(dealer, deck, players)
+    return players
 
 def bet(players: list[BlackjackBot]) -> list[BlackjackBot]:
     """function filters players that can pay the minimum bet
@@ -78,19 +82,26 @@ def deal(
                 card.flip()
             player.add_card(card)
 
+    for player in ([dealer] + players):
+        player.cards()
+
+def play(
+    dealer: BlackjackDealer,
+    deck: BlackjackDeck,
+    players: list[BlackjackBot],
+):
+    """players takes turns to hit and stand, dealer is last
+
+    Args:
+        dealer (BlackjackDealer): opponent to beat
+        deck (BlackjackDeck): draw cards
+        players (list[BlackjackBot]): get as close to 21 without going over
+    """
+    LOGGER.info('Round playing')
+    dealer_score = dealer.hand.score()
     for player in players:
-        LOGGER.info(
-            "%s hand: %02d, %s",
-            player.name,
-            player.hand.score(),
-            ' '.join(player.hand.face_values())
-        )
-    LOGGER.info(
-        "%s hand: %02d, %s **",
-        dealer.name,
-        dealer.hand.score(),
-        dealer.hand[0].face_value()
-    )
+        player.turn(dealer_score, deck)
+    dealer.turn(deck)
 
 def end(dealer: BlackjackDealer, players: list[BlackjackBot]) -> None:
     """function compares scores, collect and payout bets, and discards hands
@@ -100,10 +111,8 @@ def end(dealer: BlackjackDealer, players: list[BlackjackBot]) -> None:
         players (list[BlackjackBot]): compare score, win or lose chips, discard
     """
     LOGGER.info('Round ending')
-    for player in ([dealer] + players):
-        LOGGER.info('%s hand:', player.name)
-        for hand in player.hands:
-            LOGGER.info('%02d, %s', hand.score(), ' '.join(hand.face_values()))
+    for player in players:
+        player.cards()
     for player in players:
         winnings = compare(dealer, player)
         for winning in winnings:

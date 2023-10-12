@@ -83,6 +83,12 @@ class BlackjackPlayer(Player):
         """
         return len(self.hands) == 1 and len(self.hand) == 2
 
+    def cards(self) -> None:
+        """function log cards"""
+        self.logger.info('%s hand:', self.name)
+        for hand in self.hands:
+            self.logger.info('%02d, %s', hand.score(), ' '.join(hand.face_values()))
+
     def discard_cards(self) -> None:
         """function empties hand"""
         self.hands = [BlackjackHand()]

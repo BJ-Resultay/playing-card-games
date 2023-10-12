@@ -3,6 +3,7 @@
 # Revision History:
 #	resultay | 14-09-23 | Initial version
 
+from pytest_mock import MockerFixture
 import pytest
 from src.games.blackjack.blackjack_player import BlackjackPlayer
 from src.games.blackjack.constants import BLACKJACK, BlackjackError
@@ -311,6 +312,18 @@ def test_blackjack_unnatural(
     player.add_card(non_ace)
     player.hands.append('some hand')
     assert not player.blackjack()
+
+def test_cards(
+    ace: Card,
+    player: BlackjackPlayer,
+    mocker: MockerFixture
+):
+    """log player's cards"""
+    info = mocker.spy(player.logger, 'info')
+    player.add_card(ace)
+
+    player.cards()
+    info.assert_called()
 
 def test_discard_cards(ace: Card, player: BlackjackPlayer):
     """player discards cards"""
