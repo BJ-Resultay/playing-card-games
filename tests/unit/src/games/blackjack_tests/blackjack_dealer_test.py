@@ -103,17 +103,19 @@ def test_turn(
     """dealer hits then stands"""
     mocker.patch.object(dealer, 'can_stand', side_effect = [False, True, True])
     mocker.patch.object(dealer, 'can_hit', return_value = True)
-    mocker.patch.object(deck, 'deal', return_value = ace)
+    mocker.patch.object(deck, 'draw', return_value = ace)
     hit = mocker.spy(dealer, 'hit')
     stand = mocker.spy(dealer, 'stand')
 
-    assert not ace.face_down
+    ace.flip()
+    dealer.add_card(ace)
     dealer.turn(deck)
     hit.assert_called_once_with(ace)
     stand.assert_called_once()
-    assert ace.face_down
+    assert not ace.face_down
 
 def test_turn_error(
+    ace: Card,
     dealer: BlackjackDealer,
     deck: BlackjackDeck,
     mocker: MockerFixture,
@@ -122,5 +124,7 @@ def test_turn_error(
     mocker.patch.object(dealer, 'can_stand', return_value = False)
     mocker.patch.object(dealer, 'can_hit', return_value = False)
 
+    ace.flip()
+    dealer.add_card(ace)
     with pytest.raises(BlackjackError):
         dealer.turn(deck)

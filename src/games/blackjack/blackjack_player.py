@@ -85,7 +85,7 @@ class BlackjackPlayer(Player):
 
     def cards(self) -> None:
         """function log cards"""
-        self.logger.info('%s hand:', self.name)
+        self.logger.info('%s\'s hand:', self.name)
         for hand in self.hands:
             self.logger.info('%02d, %s', hand.score(), ' '.join(hand.face_values()))
 

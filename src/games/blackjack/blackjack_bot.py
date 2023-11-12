@@ -178,4 +178,5 @@ class BlackjackBot(BlackjackPlayer):
                 card = deck.draw()
                 self.hit(card)
             else:
+                self.cards()
                 raise BlackjackError(f'{self.name} has no valid moves')

@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from logging import getLogger
+import copy
 import random
 from src.general import Face
 from src.general import Suit
@@ -50,17 +51,23 @@ class Deck():
                 self.add_card(extra_card)
 
     def __add__(self, other: Deck) -> Deck:
-        self.order += other.order
+        self.__combine(other.order)
+        return self
+
+    def __combine(self, other: [Card]) -> Deck:
+        other = copy.deepcopy(other)
+        self.order += other
         return self
 
     def __mul__(self, other: int) -> Deck:
-        self.order *= other
+        order_copy = copy.deepcopy(self.order)
+        for _ in range(other - 1):
+            self.__combine(order_copy)
         self.logger.info('deck is %d cards large', len(self.order))
         return self
 
     def __rmul__(self, other: int) -> Deck:
-        self.order *= other
-        self.logger.info('deck is %d cards large', len(self.order))
+        self.__mul__(other)
         return self
 
     def add_card(self, card: Card) -> None:

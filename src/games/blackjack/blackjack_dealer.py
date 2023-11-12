@@ -102,6 +102,7 @@ class BlackjackDealer(BlackjackPlayer):
             BlackjackError: dealer cannot hit or stand
         """
         self.logger.info("Dealer's turn starts")
+        self.hand[-1].flip()
         while not self.hand.end:
             if self.can_stand():
                 self.stand()
@@ -109,4 +110,5 @@ class BlackjackDealer(BlackjackPlayer):
                 card = deck.draw()
                 self.hit(card)
             else:
+                self.cards()
                 raise BlackjackError('dealer cannot hit or stand')
