@@ -14,18 +14,6 @@ from src.general.card import Card
 
 ROUND = 'src.games.blackjack.blackjack_round'
 
-@pytest.fixture()
-def __compare(
-    bot: BlackjackBot,
-    dealer: BlackjackDealer,
-    mocker: MockerFixture,
-) -> None:
-    """fixture mocks blackjack and bustr"""
-    mocker.patch.object(bot, 'blackjack', return_value = False)
-    mocker.patch.object(bot.hand, 'bust', return_value = False)
-    mocker.patch.object(dealer, 'blackjack', return_value = False)
-    mocker.patch.object(dealer.hand, 'bust', return_value = False)
-
 def test_start(
     bot: BlackjackBot,
     dealer: BlackjackDealer,

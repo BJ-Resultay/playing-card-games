@@ -25,29 +25,32 @@ OPTIONS =
 SOURCE = src
 TEST = tests
 VENV = venv
-PIP = $(VENV)/bin/pip
-COVERAGE = $(VENV)/bin/coverage
-PYLINT = $(VENV)/bin/pylint
-PYTEST = $(VENV)/bin/pytest
-PYTHON = $(VENV)/bin/python3
+BIN = $(VENV)/bin
+PIP = $(BIN)/pip
+COVERAGE = $(BIN)/coverage
+PYLINT = $(BIN)/pylint
+PYTEST = $(BIN)/pytest
+PYTHON = $(BIN)/python3
 
-$(VENV)/bin/activate: requirements.txt
+.PHONY: setup run test coverage lint clean help
+
+$(BIN)/activate: requirements.txt
 	python3 -m venv $(VENV)
 	$(PIP) install -r requirements.txt
 
-setup: $(VENV)/bin/activate
+setup: $(BIN)/activate
 
-run: $(VENV)/bin/activate
+run: setup
 	$(PYTHON) sample/main.py
 
-test: $(VENV)/bin/activate
+test: setup
 ifdef OPTIONS
 	$(PYTEST) $(OPTIONS) $(TEST)
 else
 	$(PYTEST) $(TEST)
 endif
 
-coverage: $(VENV)/bin/activate
+coverage: setup
 ifdef OPTIONS
 	$(COVERAGE) run --source=$(SOURCE) $(OPTIONS) -m pytest $(TEST)
 else
@@ -55,7 +58,7 @@ else
 endif
 	coverage report
 
-lint: $(VENV)/bin/activate
+lint: setup
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
 
 clean:
