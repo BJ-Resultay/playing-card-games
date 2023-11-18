@@ -4,7 +4,7 @@
 
 Python programming on various playing card games
 
-Card games are fun and I love python.
+Card games are fun and I love Python.
 This project is to help me learn good coding practices.
 It will (hopefully) include various games.
 
@@ -14,9 +14,9 @@ It will (hopefully) include various games.
 
 ## Notes
 
-Python version used is 3.11.2.
-Python minimum version is 3.9, which supports type hints.
-Shell used is bash.
+The Python version used is 3.11.2.
+Python's minimum version is 3.9, which supports type hints.
+The shell used is bash.
 
 ## Things I learned
 
@@ -28,7 +28,7 @@ Feel free to ignore this section.
 
 ### Github
 
-Considering this repository is on Github, this should not need introduction.
+Considering this repository is on Github, this should not need an introduction.
 I've used Github in a couple of projects before for several college projects, but it was never the focus.
 The only knobs I've turned are branch protection rules and workflows.
 The former protects my code from someone trying to nuke it.
@@ -36,9 +36,9 @@ The latter automates testing and ensures my build is clean.
 
 ### Logging
 
-Logging doesn't help write code, but it is useful when using it and something goes horribly wrong.
-I definitely spent awhile working out the kinks.
-I made it way more complicated than it really needed to be.
+Logging doesn't help write code, but it is useful when using it and something goes wrong.
+I spent a while working out the kinks.
+I made it way more complicated than it needed to be.
 
 ```python
 from logging import getLogger
@@ -51,18 +51,18 @@ This is dependent on the `qualname` establishing the log file hierarchy.
 ### Makefile
 
 Makefiles are the crutch to abstract complicated terminal commands into a simple target.
-It's the first thing that was setup, including virtual environments.
-I didn't use them since freshmen year because they were very intimidating.
+It's the first thing that was set up, including virtual environments.
+I haven't used them since freshmen year because they were very intimidating.
 There wasn't much difference between running `python3 file.py` vs `make run` to me.
-This was until I was in a situation where the project I was in did not have a Makefile and not using any languages I knew.
+This was until I was in a situation where the project I was in did not have a Makefile and did not use any languages I knew.
 Not having a common language severely hampered my ability to write code.
 When testing, I cannot even imagine a world where I have to type `./venv/bin/pytest tests` instead of `make test`.
 
 ### Python
 
-After learning C/C++ in freshmen year, I fell in love with python so I didn't have to use closing braces.
+After learning C/C++ in my freshmen year, I fell in love with Python so I didn't have to use closing braces.
 I can relate to the PEP 20 - The Zen of Python.
-I obviously like writing beautiful code.
+I like writing beautiful code.
 It's a major reason why I used a linter and an IDE when writing code.
 It's also why I continuously refactor my code all the time.
 If anyone is depending on my code, I apologize sincerely.
@@ -78,7 +78,7 @@ FYI, `__init__.py` needs to be added to the entire branch so pytest can find the
 
 ### VS Code
 
-I used to exclusively use terminal and vim during college.
+I used to exclusively use Terminal and Vim during college.
 It worked great with single files.
 As I worked with more files, I needed more windows.
 Now, I have a million bits and bobs that help me code or make me scramble for documentation.
@@ -93,7 +93,7 @@ This setup allows me to fix bad coding practices while writing code.
 
 - markdownlint
 
-    This lints markdown files, obviously.
+    This lints markdown files.
 
 - Pylance
 
@@ -110,7 +110,7 @@ This setup allows me to fix bad coding practices while writing code.
 - Python Indent
 
     This automatically sets my cursor at the correct indentation.
-    Though I am not keen on hanging indents very much.
+    However, I am not keen on hanging indents very much.
 
 - Todo Tree
 

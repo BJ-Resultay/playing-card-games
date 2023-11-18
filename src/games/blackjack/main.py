@@ -1,5 +1,5 @@
-"""module runs blackjack"""
 #!/usr/local/bin/python3
+"""module runs blackjack"""
 # Date: 13 Aug 2023
 # Revision History:
 #   resultay | 13-08-23 | Force load
