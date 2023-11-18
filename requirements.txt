@@ -1,4 +1,5 @@
 coverage
+names
 pylint
 pytest
 pytest-mock
