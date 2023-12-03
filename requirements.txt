@@ -1,5 +1,6 @@
+coverage
+names
 pylint
-pylint-pytest
 pytest
-pytest-cov
+pytest-mock
 

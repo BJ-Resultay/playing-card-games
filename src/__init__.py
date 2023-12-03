@@ -1,4 +1,5 @@
 """modules in src package"""
-from . import constants
-from . import games
-from . import general
+
+import logging.config
+
+logging.config.fileConfig('logging.ini', disable_existing_loggers=False)

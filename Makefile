@@ -2,37 +2,63 @@
 # Revision History:
 #	resultay | 25-08-23 | Add documentation
 #
-## ----------------------------------------------
-## help:  Show this
-## setup: Set up virtual environment
-## run:   Run sample
-## test:  Run tests
-##        TEST=/directory/or/file/for/tests
-## lint:  Lint all python files
-##        PYLINT=/path/to/pylint
-## clean: Remove pycaches and virtual environment
-## ----------------------------------------------
+## +-+ +-+ +-+ +-+ Playing +-+ +-+ +-+ +-+
+## |♠| |♥| |♦| |♣| Card    |J| |Q| |K| |A|
+## +-+ +-+ +-+ +-+ Games   +-+ +-+ +-+ +-+
+## -------------------------------------------------
+## help:     Show this
+## setup:    Set up virtual environment
+## run:      Run sample
+## test:     Run tests
+##           OPTIONS='any other options'
+##           TEST=/directory/or/file/for/tests
+## coverage: Run tests coverage
+##           SOURCE=/directory/for/coverage
+##           OPTIONS='any other options'
+##           TEST=/directory/or/file/for/tests
+## lint:     Lint all python files
+## clean:    Remove pycaches and virtual environment
+## -------------------------------------------------
 
-VENV = venv
-PIP = $(VENV)/bin/pip
-PYLINT = $(VENV)/bin/pylint
-PYTEST = $(VENV)/bin/pytest
-PYTHON = $(VENV)/bin/python3
+OPTIONS =
+SOURCE = src
 TEST = tests
+VENV = venv
+BIN = $(VENV)/bin
+PIP = $(BIN)/pip
+COVERAGE = $(BIN)/coverage
+PYLINT = $(BIN)/pylint
+PYTEST = $(BIN)/pytest
+PYTHON = $(BIN)/python3
 
-$(VENV)/bin/activate: requirements.txt
+.PHONY: setup run test coverage lint clean help
+
+$(BIN)/activate: requirements.txt
 	python3 -m venv $(VENV)
 	$(PIP) install -r requirements.txt
 
-setup: $(VENV)/bin/activate
+setup: $(BIN)/activate
 
-run: $(VENV)/bin/activate
+run: setup
 	$(PYTHON) sample/main.py
 
-test: $(VENV)/bin/activate
-	$(PYTEST) --cov --cov-report=lcov --cov-branch -rP $(TEST)
+test: setup
+ifdef OPTIONS
+	$(PYTEST) $(OPTIONS) $(TEST)
+else
+	$(PYTEST) $(TEST)
+endif
 
-lint: $(VENV)/bin/activate
+coverage: TEST = tests/unit
+coverage: setup
+ifdef OPTIONS
+	$(COVERAGE) run --source=$(SOURCE) $(OPTIONS) -m pytest $(TEST)
+else
+	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
+endif
+	coverage report
+
+lint: setup
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
 
 clean:

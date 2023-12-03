@@ -4,16 +4,34 @@
 #	resultay | 18-08-23 | Initial version
 
 from __future__ import annotations
+from logging import getLogger
+import copy
 import random
-from src.constants import Face
-from src.constants import Suit
+from src.general import Face
+from src.general import Suit
 from src.general.card import Card
+
+LOGGER = getLogger(__name__)
 
 class Deck():
     """class models deck of playing cards"""
     def __init__(self, extra_cards: list[Card] = None) -> None:
+        """
+        Args:
+            extra_cards (list[Card], optional): extra cards to add to deck. Defaults to None.
+        """
         self.face_down = True
-        self.order = [None] * 52
+        """
+        intended whether cards shows face value\n
+        default hidden\n
+        Note: not coupled to card state themselves
+        """
+
+        self.logger = LOGGER
+        """logfile handler for info"""
+
+        self.order: list[Card] = [None] * 52
+        """order of cards"""
 
         # A-K Hearts
         # A-K Clubs
@@ -33,25 +51,49 @@ class Deck():
                 self.add_card(extra_card)
 
     def __add__(self, other: Deck) -> Deck:
-        self.order += other.order
+        self.__combine(other.order)
+        return self
+
+    def __combine(self, other: [Card]) -> Deck:
+        other = copy.deepcopy(other)
+        self.order += other
         return self
 
     def __mul__(self, other: int) -> Deck:
-        self.order *= other
+        order_copy = copy.deepcopy(self.order)
+        for _ in range(other - 1):
+            self.__combine(order_copy)
+        self.logger.info('deck is %d cards large', len(self.order))
         return self
 
     def __rmul__(self, other: int) -> Deck:
-        self.order *= other
+        self.__mul__(other)
         return self
 
     def add_card(self, card: Card) -> None:
-        """function adds card to the bottom"""
+        """function adds card to the bottom
+
+        Args:
+            card (Card): card added to hand
+        """
         if not isinstance(card, Card):
             raise AttributeError('non cards cannot be added to the deck')
         self.order.append(card)
 
     def deal(self, position: int = 0) -> Card:
-        """function removes card from deck"""
+        """function removes card from deck
+
+        Args:
+            position (int, optional): position of card dealt. Defaults to 0.
+
+        Raises:
+            AttributeError: deck is empty
+            AttributeError: position must be integer
+            AttributeError: position not in range
+
+        Returns:
+            Card: card dealt
+        """
         # cheaters can deal any card from the deck
         if len(self.order) == 0:
             raise AttributeError('deck is empty')
@@ -60,14 +102,24 @@ class Deck():
         length = len(self.order)
         if position not in range(-length, length):
             raise AttributeError(f'position not in range {length}')
-        return self.order.pop(position)
+        card = self.order.pop(position)
+        self.logger.debug('dealt %s', card.face_value())
+        return card
 
     def face_values(self) -> None:
         """function returns face values of entire deck"""
         return [card.face_value() for card in self.order]
 
     def false_shuffle(self, indexes: list[int]) -> None:
-        """function controls cards defined at index"""
+        """function controls cards defined at index
+
+        Args:
+            indexes (list[int]): mask to order cards
+
+        Raises:
+            AttributeError: indexes must be a list
+            AttributeError: indexes cannot be larger than deck
+        """
         if not isinstance(indexes, list):
             raise AttributeError('indexes must be a list')
         if len(indexes) > len(self.order):
@@ -100,9 +152,13 @@ class Deck():
         self.reverse()
 
     def remove_cards(self, to_remove: list[Card]) -> list:
-        """
-        function removes all cards from deck with both face and suit
-        returns removed cards
+        """function removes all cards from deck with both face and suit
+
+        Args:
+            to_remove (list[Card]): mask to remove cards
+
+        Returns:
+            list: removed cards
         """
         removed_cards = [card for card in self.order if card in to_remove]
         for card in removed_cards:
@@ -115,9 +171,15 @@ class Deck():
         suit: Suit = None,
         points: int = None,
     ) -> list:
-        """
-        function removes all cards from deck with either face and suit
-        returns removed cards
+        """function removes all cards from deck with either face and suit
+
+        Args:
+            face (Face, optional): face mask. Defaults to None.
+            suit (Suit, optional): suit mask. Defaults to None.
+            points (int, optional): points mask. Defaults to None.
+
+        Returns:
+            list: removed cards
         """
         removed_cards = []
         for card in self.order:
@@ -136,4 +198,5 @@ class Deck():
 
     def shuffle(self) -> None:
         """function shuffles order of the deck"""
+        self.logger.info("Deck shuffled")
         random.shuffle(self.order)

@@ -1,3 +1,7 @@
 """modules in blackjack package"""
-from . import blackjack_player
-from .main import main
+
+from .blackjack_game import main
+
+__all__ = [
+    'blackjack_game',
+]

@@ -1,4 +1,9 @@
 """modules in general package"""
-from . import card
-from . import deck
-from . import player
+
+from .face import Face
+from .suit import Suit
+
+__all__ = [
+    'Face',
+    'Suit',
+]

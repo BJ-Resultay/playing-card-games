@@ -3,13 +3,12 @@
 # Revision History:
 #	resultay | 13-08-23 | Initial version
 
-from src.constants import Face
+from src.general import Suit
 
 def test_values():
     """test values"""
-    values = set(face.value for face in Face)
+    values = set(suit.value for suit in Suit)
     assert values == set([
-		'A', '2', '3', '4', '5',
-		'6', '7', '8', '9', '10',
-		'J', 'Q', 'K'
+		'\u2663', '\u2666',
+        '\u2665', '\u2660'
     ])
