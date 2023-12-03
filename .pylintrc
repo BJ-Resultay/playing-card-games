@@ -4,7 +4,8 @@ fail-under = 10.0
 [MESSAGES CONTROL]
 disable =
 	import-error,
-	redefined-outer-name
+	redefined-outer-name,
+	fixme
 
 [SIMILARITIES]
 min-similarity-lines = 6

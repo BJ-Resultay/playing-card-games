@@ -12,8 +12,6 @@ from src.games.blackjack.blackjack_deck import BlackjackDeck
 from src.games.blackjack.constants import BlackjackError
 from src.general.card import Card
 
-ROUND = 'src.games.blackjack.blackjack_round'
-
 def test_start(
     bot: BlackjackBot,
     dealer: BlackjackDealer,
@@ -21,8 +19,8 @@ def test_start(
     mocker: MockerFixture,
 ):
     """bots bet and cards are dealt"""
-    bet = mocker.patch(f'{ROUND}.bet', return_value = [])
-    deal = mocker.patch(f'{ROUND}.deal')
+    bet = mocker.patch.object(blackjack_round, 'bet', return_value = [])
+    deal = mocker.patch.object(blackjack_round, 'deal')
 
     players = blackjack_round.start(dealer, deck, [bot])
     assert players == []
@@ -89,7 +87,7 @@ def test_end(
     players wins and discard
     dealer discards
     """
-    mocker.patch(f'{ROUND}.compare', return_value = [2])
+    mocker.patch.object(blackjack_round, 'compare', return_value = [2])
     bot.add_card(ace)
     bot.bet_chips(5)
     dealer.add_card(ace)

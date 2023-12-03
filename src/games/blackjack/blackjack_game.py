@@ -20,14 +20,14 @@ NUM_DECKS = 6
 NUM_BOTS = 4
 """number of other players"""
 
-def main():
+def main() -> None:
     """function runs blackjack game"""
     dealer, deck, players = setup()
 
+    # TODO: exit if player quits
     for _ in range(10):
         play_round(dealer, deck, players)
         deck, players = reset(deck, players)
-    return True
 
 def setup() -> tuple[BlackjackDealer, BlackjackDeck, list[BlackjackBot]]:
     """function sets up blackjack game

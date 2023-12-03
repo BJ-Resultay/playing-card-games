@@ -103,7 +103,7 @@ class BlackjackPlayer(Player):
         Raises:
             BlackjackError: cannot double down with hand
         """
-        self.logger.info('%s doubled down', self.name)
+        self.logger.info('%s doubled down %s', self.name, card.face_value())
         if not self.can_double_down():
             raise BlackjackError(f'cannot double down with hand {self.hand.face_values()}')
 
@@ -124,7 +124,7 @@ class BlackjackPlayer(Player):
         Raises:
             BlackjackError: cannot hit with hand
         """
-        self.logger.info('%s hit', self.name)
+        self.logger.info('%s hit %s', self.name, card.face_value())
         if not self.can_hit():
             raise BlackjackError(f'cannot hit with hand {self.hand.face_values()}')
 
@@ -173,6 +173,7 @@ class BlackjackPlayer(Player):
         self.hand = self.hands[current_hand]
 
         self.chips -= self.bet
+        self.cards()
 
     def stand(self) -> None:
         """function ends hand
