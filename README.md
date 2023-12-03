@@ -15,7 +15,7 @@ It will (hopefully) include various games.
 ## Notes
 
 The Python version used is 3.11.2.
-Python's minimum version is 3.9, which supports type hints.
+Python's minimum version is 3.10, which supports '|' type hints.
 The shell used is bash.
 
 ## Things I learned
