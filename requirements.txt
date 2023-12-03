@@ -3,4 +3,5 @@ names
 pylint
 pytest
 pytest-mock
+pytest-profiling
 
