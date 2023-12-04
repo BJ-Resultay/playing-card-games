@@ -1,6 +1,6 @@
 [//]: # (documentation for full project)
 
-# ♠♥Playing Card Games♦♣
+# ♠♥ Playing Card Games ♦♣
 
 Python programming on various playing card games
 
