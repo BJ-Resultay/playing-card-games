@@ -1,6 +1,6 @@
 # VS Code
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 I used to exclusively use Terminal and Vim during college.
 It worked great with single files.

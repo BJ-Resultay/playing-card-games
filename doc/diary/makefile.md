@@ -1,6 +1,6 @@
 # Makefile
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 Makefiles are the crutch to abstract complicated terminal commands into a simple target.
 It's the first thing that was set up, including virtual environments.

@@ -1,6 +1,6 @@
 # Logging
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 Logging doesn't help write code, but it is useful when using it and something goes wrong.
 I spent a while working out the kinks.

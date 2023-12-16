@@ -42,6 +42,7 @@ setup: $(BIN)/activate
 run: setup
 	$(PYTHON) sample/main.py
 
+# pytest-profiling added --profile
 test: setup
 ifdef OPTIONS
 	$(PYTEST) $(OPTIONS) $(TEST)

@@ -26,4 +26,4 @@ Therefore, I'm documenting them in the most likely place for me to find them aga
 This section contains no instructions.
 Feel free to ignore this section.
 
-[Diary](doc/diary/table_of_contents.md)
+[Diary](doc/diary/entries.md)

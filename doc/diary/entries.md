@@ -1,6 +1,6 @@
 [//]: # (contain links to other entries)
 
-# Table of Contents
+# Entries
 
 [> Back to Readme](../../README.md)
 

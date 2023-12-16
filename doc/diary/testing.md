@@ -1,6 +1,6 @@
 # Testing
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 Automated testing is a staple of quality assurance.
 Clean tests inspire confidence in my code.

@@ -1,6 +1,6 @@
 # Extensions
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 Extensions add to my VS Code experience and provide useful capabilities.
 
@@ -99,4 +99,4 @@ These extensions enhance my workspace and provide customization.
     This is used to have a small interactable animal run around in a window.
     It is the equivalent of a hanging kitten poster.
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)

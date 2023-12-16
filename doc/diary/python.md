@@ -1,6 +1,6 @@
 # Python
 
-[> Back to TOC](table_of_contents.md)
+[> Back to TOC](entries.md)
 
 After learning C/C++ in my freshmen year, I fell in love with Python so I didn't have to use closing braces.
 I can relate to the PEP 20 - The Zen of Python.
