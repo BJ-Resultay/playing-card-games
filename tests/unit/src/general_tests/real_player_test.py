@@ -20,7 +20,9 @@ def actions() -> list[str]:
 def real_player(monkeypatch: MonkeyPatch) -> RealPlayer:
     """fixture returns real player"""
     monkeypatch.setattr('builtins.input', lambda _: 'Jean Hugard')
-    return RealPlayer()
+    player = RealPlayer()
+    monkeypatch.undo() # breakpoints use input
+    return player
 
 def test_get_input(
     actions: list[str],
