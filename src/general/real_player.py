@@ -16,34 +16,33 @@ class RealPlayer(Player):
         super().__init__(name)
         self.logger = LOGGER
 
-    def input(self, actions: list[str]) -> str:
+    def multiple_choice(self, prompt: str, choices: list[str]) -> str:
         """function takes player input
 
         Args:
-            actions (list[str]): available actions
+            prompt (str): question for user
+            choices (list[str]): valid choices
 
         Returns:
-            str: closest action
+            str: closest choice
         """
-        actions.sort()
-        for action in actions:
-            print(f'* {action}')
-        raw_input = input('> ')
+        print(prompt)
+        choices.sort()
+        for choice in choices:
+            print(f'* {choice}')
+        raw_input = ''
+        while not raw_input:
+            raw_input = input('> ')
         self.logger.info('Raw input %s', raw_input)
 
-        # if action starts with input
-        filtered_actions = [action for action in actions if action.startswith(raw_input)]
-        if filtered_actions:
-            return filtered_actions[0]
-
-        # else if action contains input
-        filtered_actions = [action for action in actions if raw_input in action]
-        if filtered_actions:
-            return filtered_actions[0]
+        # if choice starts with input
+        filtered_choices = [choice for choice in choices if choice.startswith(raw_input)]
+        if filtered_choices:
+            return filtered_choices[0]
 
         # else use minimum levenshtein distance
         # https://maxbachmann.github.io/Levenshtein
-        levenshtein_distances = [distance(raw_input, action) for action in actions]
+        levenshtein_distances = [distance(raw_input, choice) for choice in choices]
         print(levenshtein_distances)
         minimum_position = levenshtein_distances.index(min(levenshtein_distances))
-        return actions[minimum_position]
+        return choices[minimum_position]

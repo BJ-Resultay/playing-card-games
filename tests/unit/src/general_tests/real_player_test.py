@@ -19,9 +19,9 @@ def actions() -> list[str]:
 @pytest.fixture()
 def real_player(monkeypatch: MonkeyPatch) -> RealPlayer:
     """fixture returns real player"""
-    monkeypatch.setattr('builtins.input', lambda _: 'Jean Hugard')
+    monkeypatch.setattr('builtins.input', lambda _ : 'Jean Hugard')
     player = RealPlayer()
-    monkeypatch.undo() # breakpoints use input
+    monkeypatch.undo() # breakpoints use bulitin input
     return player
 
 def test_get_input(
@@ -30,9 +30,20 @@ def test_get_input(
     real_player: RealPlayer
 ):
     """get input from player"""
-    monkeypatch.setattr('builtins.input', lambda _: actions[0])
-    action = real_player.input(actions)
+    monkeypatch.setattr('builtins.input', lambda _ : actions[0])
+    action = real_player.multiple_choice('', actions)
     assert action == actions[0]
+
+def test_get_no_input(
+    actions: list[str],
+    monkeypatch: MonkeyPatch,
+    real_player: RealPlayer
+):
+    """get no from player"""
+    user_input = iter(['', actions[1]])
+    monkeypatch.setattr('builtins.input', lambda _ : next(user_input))
+    action = real_player.multiple_choice('', actions)
+    assert action == actions[1]
 
 def test_get_shortened_input(
     actions: list[str],
@@ -40,18 +51,8 @@ def test_get_shortened_input(
     real_player: RealPlayer
 ):
     """get shortened input from player"""
-    monkeypatch.setattr('builtins.input', lambda _: 'action')
-    action = real_player.input(actions)
-    assert action == actions[0]
-
-def test_get_shorned_input(
-    actions: list[str],
-    monkeypatch: MonkeyPatch,
-    real_player: RealPlayer
-):
-    """get shorned input from player"""
-    monkeypatch.setattr('builtins.input', lambda _: 'tion')
-    action = real_player.input(actions)
+    monkeypatch.setattr('builtins.input', lambda _ : 'action')
+    action = real_player.multiple_choice('', actions)
     assert action == actions[0]
 
 def test_get_shorthand_input(
@@ -60,6 +61,6 @@ def test_get_shorthand_input(
     real_player: RealPlayer
 ):
     """get shorthand input from player"""
-    monkeypatch.setattr('builtins.input', lambda _: 'a2')
-    action = real_player.input(actions)
+    monkeypatch.setattr('builtins.input', lambda _ : 'a2')
+    action = real_player.multiple_choice('', actions)
     assert action == actions[1]
