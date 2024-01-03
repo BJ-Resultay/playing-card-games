@@ -88,7 +88,7 @@ def test_get_float(monkeypatch: MonkeyPatch, real_player: RealPlayer):
 
 def test_get_invalid_float(monkeypatch: MonkeyPatch, real_player: RealPlayer):
     """get invalid float from player"""
-    user_input = iter(['', NUMBER])
+    user_input = iter(['float', NUMBER])
     monkeypatch.setattr('builtins.input', lambda _ : next(user_input))
     number = real_player.user_float('')
     assert number == float(NUMBER)
@@ -101,7 +101,7 @@ def test_get_integer(monkeypatch: MonkeyPatch, real_player: RealPlayer):
 
 def test_get_invalid_integer(monkeypatch: MonkeyPatch, real_player: RealPlayer):
     """get invalid integer from player"""
-    user_input = iter(['', NUMBER])
+    user_input = iter(['int', NUMBER])
     monkeypatch.setattr('builtins.input', lambda _ : next(user_input))
     number = real_player.user_integer('')
     assert number == int(NUMBER)
