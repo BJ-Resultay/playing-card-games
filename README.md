@@ -1,6 +1,6 @@
-[//]: # (documentation for full project)
-
 # ♠♥ Playing Card Games ♦♣
+
+[//]: # (documentation for full project)
 
 Python programming on various playing card games
 
@@ -16,7 +16,7 @@ It will (hopefully) include various games.
 
 The Python version used is 3.11.2.
 Python's minimum version is 3.10, which supports '|' type hints.
-The shell used is bash.
+The shell used is zsh.
 
 ## Things I learned
 
