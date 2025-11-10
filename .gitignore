@@ -5,4 +5,4 @@ playing-card-games.code-workspace
 prof/
 venv/
 **.swp
-
+**/.DS_Store
