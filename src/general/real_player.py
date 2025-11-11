@@ -43,27 +43,71 @@ class RealPlayer(Player):
         Returns:
             str: closest choice of valid choices
         """
-        print(prompt)
         choices.sort()
+        self.__user_choice_print_prompt(prompt, choices)
+        choice = None
+        while choice is None:
+            try:
+                choice = self.__user_choice_clean_input(choices)
+            except ValueError:
+                self.__user_choice_print_prompt(prompt, choices)
+        return choice
+
+    def __user_choice_print_prompt(self, prompt: str, choices: list[str]) -> None:
+        """function prints prompt for user choice
+
+        Args:
+            prompt (str): question for user
+            choices (list[str]): valid choices
+        """
+        print(prompt)
         for choice in choices:
             print(f'* {choice}')
+
+    def __user_choice_clean_input(self, choices: list[str]) -> str:
+        """function cleans choice input
+
+        Args:
+            choices (list[str]): valid choices
+
+        Returns:
+            str: intelligent choice
+        """
         raw_input = self.__input()
+
+        # if choice is exact
+        if raw_input in choices:
+            self.logger.info('Clean input %s', raw_input)
+            return raw_input
 
         # if choice starts with input
         filtered_choices = [choice for choice in choices if choice.startswith(raw_input)]
         if filtered_choices:
+            if len(filtered_choices) > 1:
+                print('Multiple choices available:')
+                for choice in filtered_choices:
+                    print(f'* {choice}')
+                raise ValueError
+            self.logger.info('Clean input %s', filtered_choices[0])
             return filtered_choices[0]
 
-        # else use minimum levenshtein distance
+        # else show minimum levenshtein distance
         # https://maxbachmann.github.io/Levenshtein
         levenshtein_distances = [distance(raw_input, choice) for choice in choices]
-        print(levenshtein_distances)
-        minimum_position = levenshtein_distances.index(min(levenshtein_distances))
-        return choices[minimum_position]
+        min_levenshtein_distance = min(levenshtein_distances)
+        indices = [
+            index
+            for index, value
+            in enumerate(levenshtein_distances)
+            if value == min_levenshtein_distance
+        ]
+        print('Did you mean?')
+        for index in indices:
+            print(f'* {choices[index]}')
+        raise ValueError
 
     def user_chips(self) -> None:
-        """function takes player bet
-        """
+        """function takes player bet"""
         prompt = f"""
         Current Balance {self.chips}
         Place bet.
