@@ -63,8 +63,7 @@ lint: setup
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
 
 clean:
-	rm -rf __pycache__
-	rm -rf $(VENV)
+	git clean -fxd
 
 help:
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
