@@ -18,6 +18,7 @@
 ##           TEST=/directory/or/file/for/tests
 ## lint:     Lint all python files
 ## clean:    Remove pycaches and virtual environment
+##           OPTIONS='replace options fxd'
 ## -------------------------------------------------
 
 OPTIONS =
@@ -62,8 +63,10 @@ endif
 lint: setup
 	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
 
+# force file directory
+clean: OPTIONS = -fxd
 clean:
-	git clean -fxd
+	git clean $(OPTIONS)
 
 help:
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
