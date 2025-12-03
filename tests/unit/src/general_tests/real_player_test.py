@@ -16,7 +16,8 @@ def actions() -> list[str]:
     return [
         'action1',
         'action2',
-        'action3'
+        'action3',
+        'action44',
     ]
 
 @pytest.fixture()
@@ -54,17 +55,29 @@ def test_get_shortened_choice(
     real_player: RealPlayer
 ):
     """get shortened choice from player"""
-    monkeypatch.setattr('builtins.input', lambda _ : 'action')
+    monkeypatch.setattr('builtins.input', lambda _ : 'action4')
     action = real_player.user_choice('', actions)
-    assert action == actions[0]
+    assert action == 'action44'
 
-def test_get_shorthand_choice(
+def test_get_shortened_choice_error(
     actions: list[str],
     monkeypatch: MonkeyPatch,
     real_player: RealPlayer
 ):
-    """get shorthand choice from player"""
-    monkeypatch.setattr('builtins.input', lambda _ : 'a2')
+    """get shortened choice from player fails"""
+    user_input = iter(['action', actions[1]])
+    monkeypatch.setattr('builtins.input', lambda _ : next(user_input))
+    action = real_player.user_choice('', actions)
+    assert action == actions[1]
+
+def test_get_incorrect_choice(
+    actions: list[str],
+    monkeypatch: MonkeyPatch,
+    real_player: RealPlayer
+):
+    """get incorrect choice from player"""
+    user_input = iter(['abc', actions[1]])
+    monkeypatch.setattr('builtins.input', lambda _ : next(user_input))
     action = real_player.user_choice('', actions)
     assert action == actions[1]
 
