@@ -24,7 +24,7 @@ class Player():
     """class models general player"""
     STARTING_CHIPS = 3000.00
 
-    def __init__(self, name: str):
+    def __init__(self, *_args, name: str):
         """
         Args:
             name (str): distinguish players in human readable format

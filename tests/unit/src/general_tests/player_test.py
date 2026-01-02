@@ -17,7 +17,7 @@ from src.general.player import (
 @pytest.fixture()
 def player() -> Player:
     """fixture returns player"""
-    return Player('René Lavand')
+    return Player(name='René Lavand')
 
 @pytest.fixture()
 def card() -> Card:

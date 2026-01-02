@@ -17,7 +17,7 @@ LOGGER = getLogger(__name__)
 class BlackjackDealer(BlackjackPlayer):
     """class models blackjack dealer"""
     def __init__(self):
-        super().__init__('Dealer')
+        super().__init__(name='Dealer')
         self.logger = LOGGER
 
     def can_double_down(self) -> bool:

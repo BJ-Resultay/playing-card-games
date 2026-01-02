@@ -13,12 +13,12 @@ LOGGER = getLogger(__name__)
 
 class BlackjackPlayer(Player):
     """class models blackjack player"""
-    def __init__(self, name: str):
+    def __init__(self, **kwargs):
         """
         Args:
             name (str): distinguish players in human readable format
         """
-        super().__init__(name)
+        super().__init__(**kwargs)
         self.hands: list[BlackjackHand] = [BlackjackHand()]
         """split allows multiple hands"""
 

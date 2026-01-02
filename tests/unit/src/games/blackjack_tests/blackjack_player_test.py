@@ -12,7 +12,7 @@ from src.general.card import Card
 @pytest.fixture()
 def player() -> BlackjackPlayer:
     """fixture returns blackjack player"""
-    return BlackjackPlayer('Bill Malone')
+    return BlackjackPlayer(name='Bill Malone')
 
 class TestDoubleDown():
     """test double down related functions"""

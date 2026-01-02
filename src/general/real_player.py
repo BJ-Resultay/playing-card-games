@@ -16,9 +16,10 @@ LOGGER = getLogger(__name__)
 
 class RealPlayer(Player):
     """class takes in player input"""
-    def __init__(self) -> None:
-        name = input('Enter name: ')
-        super().__init__(name)
+    def __init__(self, **kwargs) -> None:
+        if 'name' not in kwargs:
+            kwargs['name'] = input('Enter name: ')
+        super().__init__(**kwargs)
         self.logger = LOGGER
 
     def __input(self) -> str:
@@ -43,6 +44,8 @@ class RealPlayer(Player):
         Returns:
             str: closest choice of valid choices
         """
+        if not choices:
+            raise ValueError("No choices given")
         choices.sort()
         self.__user_choice_print_prompt(prompt, choices)
         choice = None
