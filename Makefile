@@ -54,14 +54,23 @@ endif
 coverage: TEST = tests/unit
 coverage: setup
 ifdef OPTIONS
-	$(COVERAGE) run --source=$(SOURCE) $(OPTIONS) -m pytest $(TEST)
+	$(COVERAGE) run \
+	--source=$(SOURCE) \
+	$(OPTIONS) \
+	-m pytest $(TEST)
 else
-	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
+	$(COVERAGE) run \
+	--source=$(SOURCE) \
+	-m pytest $(TEST)
 endif
-	coverage report
+	$(COVERAGE) report
 
 lint: setup
-	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
+	find . \
+	-type f \
+	-not -path "./$(VENV)/*" \
+	-name "*.py" \
+	| xargs $(PYLINT)
 
 # force file directory
 clean: OPTIONS = -fxd

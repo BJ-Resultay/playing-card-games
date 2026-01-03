@@ -28,6 +28,12 @@ def real_player(monkeypatch: MonkeyPatch) -> RealPlayer:
     monkeypatch.undo() # breakpoints use bulitin input
     return player
 
+def test_init_real_player():
+    """init real player with name"""
+    name = "some name"
+    player = RealPlayer(name=name)
+    assert player.name == name
+
 def test_get_choice(
     actions: list[str],
     monkeypatch: MonkeyPatch,
@@ -37,6 +43,11 @@ def test_get_choice(
     monkeypatch.setattr('builtins.input', lambda _ : actions[0])
     action = real_player.user_choice('', actions)
     assert action == actions[0]
+
+def test_no_choices_given(real_player: RealPlayer):
+    """no choices for prompt"""
+    with pytest.raises(ValueError):
+        real_player.user_choice('', [])
 
 def test_get_no_choice(
     actions: list[str],

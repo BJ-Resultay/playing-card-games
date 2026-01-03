@@ -18,18 +18,18 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
         super().__init__()
         self.logger = LOGGER
 
-    def turn(self, _dealer_score: int, deck: BlackjackDeck):
+    def turn(self, dealer_score: int, deck: BlackjackDeck):
         """function decides player's decisions for their turn
 
         Args:
-            dealer_score (int): used in bot decision tree
+            dealer_score (int): used in player prompt
             deck (BlackjackDeck): deck player draws from
         """
         hands = iter(self.hands)
         self.hand = next(hands)
         self.logger.info("%s's turn starts", self.name)
         while not self.hands[-1].end:
-            move = self.user_move()
+            move = self.user_move(dealer_score)
             match move:
                 case "surrender":
                     self.surrender()
@@ -48,8 +48,11 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
             if self.hand.end:
                 self.hand = next(hands)
 
-    def user_move(self):
+    def user_move(self, dealer_score: int):
         """function interprets input as valid move
+
+        Args:
+            dealer_score (int): used in player prompt
 
         Raises:
             BlackjackError: player has no valid moves
@@ -75,4 +78,4 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
         if not valid_moves:
             self.cards()
             raise BlackjackError(f'{self.name} has no valid moves')
-        return self.user_choice("Choose move:", valid_moves)
+        return self.user_choice(f"{dealer_score}\nChoose move:", valid_moves)
