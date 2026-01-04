@@ -21,7 +21,7 @@ class BlackjackBot(BlackjackPlayer):
         Args:
             name (str): distinguish players in human readable format
         """
-        super().__init__(name)
+        super().__init__(name=name)
         self.logger = LOGGER
 
     def should_double_down(self, dealer_score: int) -> bool:

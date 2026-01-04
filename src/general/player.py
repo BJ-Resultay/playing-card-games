@@ -11,11 +11,20 @@ from src.general.card import Card
 
 LOGGER = getLogger(__name__)
 
+class InsufficientAmount(AttributeError):
+    """value is insufficient"""
+
+class NotNumeric(AttributeError):
+    """value is not numeric"""
+
+class NotPositive(AttributeError):
+    """value is not positive"""
+
 class Player():
     """class models general player"""
     STARTING_CHIPS = 3000.00
 
-    def __init__(self, name: str):
+    def __init__(self, *_args, name: str):
         """
         Args:
             name (str): distinguish players in human readable format
@@ -62,18 +71,18 @@ class Player():
             chips (float): chips used to bet
 
         Raises:
-            AttributeError: chips must be positive number
-            AttributeError: chips must be positive
-            AttributeError: not enough chips to bet
+            NotNumeric: chips must be positive number
+            NotPositive: chips must be positive
+            InsufficientAmount: not enough chips to bet
         """
         if not isinstance(chips, (float, int)):
-            raise AttributeError('chips must be positive number')
+            raise NotNumeric('Chips must be positive number')
         chips = round(float(chips), 2)
         self.logger.info('%s bet $%d', self.name, chips)
         if chips <= 0:
-            raise AttributeError('chips must be positive')
+            raise NotPositive('Chips must be positive')
         if self.chips < chips:
-            raise AttributeError('not enough chips to bet')
+            raise InsufficientAmount('Not enough chips to bet')
         self.bet += chips
         self.chips -= chips
 

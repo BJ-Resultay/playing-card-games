@@ -111,6 +111,7 @@ def end(dealer: BlackjackDealer, players: list[BlackjackBot]) -> None:
         players (list[BlackjackBot]): compare score, win or lose chips, discard
     """
     LOGGER.info('Round ending')
+    dealer.cards()
     for player in players:
         player.cards()
     for player in players:

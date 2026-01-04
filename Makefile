@@ -18,6 +18,7 @@
 ##           TEST=/directory/or/file/for/tests
 ## lint:     Lint all python files
 ## clean:    Remove pycaches and virtual environment
+##           OPTIONS='replace options fxd'
 ## -------------------------------------------------
 
 OPTIONS =
@@ -42,6 +43,7 @@ setup: $(BIN)/activate
 run: setup
 	$(PYTHON) sample/main.py
 
+# pytest-profiling added --profile
 test: setup
 ifdef OPTIONS
 	$(PYTEST) $(OPTIONS) $(TEST)
@@ -52,18 +54,28 @@ endif
 coverage: TEST = tests/unit
 coverage: setup
 ifdef OPTIONS
-	$(COVERAGE) run --source=$(SOURCE) $(OPTIONS) -m pytest $(TEST)
+	$(COVERAGE) run \
+	--source=$(SOURCE) \
+	$(OPTIONS) \
+	-m pytest $(TEST)
 else
-	$(COVERAGE) run --source=$(SOURCE) -m pytest $(TEST)
+	$(COVERAGE) run \
+	--source=$(SOURCE) \
+	-m pytest $(TEST)
 endif
-	coverage report
+	$(COVERAGE) report
 
 lint: setup
-	find . -type f -not -path "./$(VENV)/*" -name "*.py" | xargs $(PYLINT)
+	find . \
+	-type f \
+	-not -path "./$(VENV)/*" \
+	-name "*.py" \
+	| xargs $(PYLINT)
 
+# force file directory
+clean: OPTIONS = -fxd
 clean:
-	rm -rf __pycache__
-	rm -rf $(VENV)
+	git clean $(OPTIONS)
 
 help:
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)

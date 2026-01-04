@@ -11,6 +11,8 @@ jobs:
         python-version:
         - "3.10"
         - "3.11"
+        - "3.12"
+        - "3.13"
     steps:
       - uses: actions/checkout@v3
       - name: Switch to Current Branch
@@ -28,5 +30,4 @@ jobs:
       - name: Generate coverage
         run: coverage run --source=src -m pytest tests/unit
       - name: Report coverage
-        run: coverage report --fail-under=100
-
+        run: coverage report

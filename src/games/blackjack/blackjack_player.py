@@ -13,12 +13,12 @@ LOGGER = getLogger(__name__)
 
 class BlackjackPlayer(Player):
     """class models blackjack player"""
-    def __init__(self, name: str):
+    def __init__(self, **kwargs):
         """
         Args:
             name (str): distinguish players in human readable format
         """
-        super().__init__(name)
+        super().__init__(**kwargs)
         self.hands: list[BlackjackHand] = [BlackjackHand()]
         """split allows multiple hands"""
 
@@ -114,6 +114,7 @@ class BlackjackPlayer(Player):
 
         if self.hand.bust():
             self.logger.info('%s busted', self.name)
+        self.cards()
 
     def hit(self, card: Card) -> None:
         """function adds card to hand
@@ -132,6 +133,7 @@ class BlackjackPlayer(Player):
         if self.hand.bust():
             self.logger.info('%s busted', self.name)
             self.hand.end = True
+        self.cards()
 
     def increase_stat(self, stat: str) -> None:
         """override: increases blackjack statistic

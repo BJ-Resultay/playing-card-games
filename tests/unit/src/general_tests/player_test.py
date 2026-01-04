@@ -7,12 +7,17 @@ import pytest
 from src.general import Face
 from src.general import Suit
 from src.general.card import Card
-from src.general.player import Player
+from src.general.player import (
+    InsufficientAmount,
+    NotNumeric,
+    NotPositive,
+    Player,
+)
 
 @pytest.fixture()
 def player() -> Player:
     """fixture returns player"""
-    return Player('René Lavand')
+    return Player(name='René Lavand')
 
 @pytest.fixture()
 def card() -> Card:
@@ -43,17 +48,17 @@ def test_bet_more_chips(player: Player):
 
 def test_bet_chips_not_number(player: Player):
     """non number raises error"""
-    with pytest.raises(AttributeError):
+    with pytest.raises(NotNumeric):
         player.bet_chips('5')
 
 def test_bet_negative_chips(player: Player):
     """negative number raises error"""
-    with pytest.raises(AttributeError):
+    with pytest.raises(NotPositive):
         player.bet_chips(-5)
 
 def test_bet_too_many_chips(player: Player):
     """going over raises error"""
-    with pytest.raises(AttributeError):
+    with pytest.raises(InsufficientAmount):
         player.bet_chips(player.STARTING_CHIPS + 1)
 
 def test_bet_win(player: Player):
