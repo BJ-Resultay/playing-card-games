@@ -29,6 +29,8 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
         self.hand = next(hands)
         self.logger.info("%s's turn starts", self.name)
         while not self.hands[-1].end:
+            if self.hand.end:
+                self.hand = next(hands)
             move = self.user_move(dealer_score)
             match move:
                 case "surrender":
@@ -42,13 +44,11 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
                     self.double_down(card)
                 case "stand":
                     self.stand()
-                case "hit":
+                case _: # "hit"
                     card = deck.draw()
                     self.hit(card)
-            if self.hand.end:
-                self.hand = next(hands)
 
-    def user_move(self, dealer_score: int):
+    def user_move(self, dealer_score: int) -> str:
         """function interprets input as valid move
 
         Args:
@@ -63,7 +63,7 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
         all_moves = [
             "surrender",
             "split",
-            "double down"
+            "double down",
             "stand",
             "hit"
         ]
@@ -75,7 +75,15 @@ class BlackjackRealPlayer(BlackjackPlayer, RealPlayer):
             self.can_hit()
         ]
         valid_moves = list(itertools.compress(all_moves, valid_moves_mask))
+        prompt = (
+            'Current hand: %02d, %s\n'
+            f"Dealer score: {dealer_score}\n"
+            "Choose move:"
+        ) % (
+            self.hand.score(),
+            ' '.join(self.hand.face_values())
+        )
         if not valid_moves:
             self.cards()
             raise BlackjackError(f'{self.name} has no valid moves')
-        return self.user_choice(f"{dealer_score}\nChoose move:", valid_moves)
+        return self.user_choice(prompt, valid_moves)

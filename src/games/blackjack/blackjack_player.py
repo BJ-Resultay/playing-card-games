@@ -114,6 +114,7 @@ class BlackjackPlayer(Player):
 
         if self.hand.bust():
             self.logger.info('%s busted', self.name)
+        self.cards()
 
     def hit(self, card: Card) -> None:
         """function adds card to hand
@@ -132,6 +133,7 @@ class BlackjackPlayer(Player):
         if self.hand.bust():
             self.logger.info('%s busted', self.name)
             self.hand.end = True
+        self.cards()
 
     def increase_stat(self, stat: str) -> None:
         """override: increases blackjack statistic

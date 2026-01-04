@@ -31,7 +31,7 @@ class RealPlayer(Player):
         raw_input = None
         while not raw_input:
             raw_input = input('> ')
-        self.logger.info('Raw input %s', raw_input)
+        self.logger.debug('Raw input "%s"', raw_input)
         return raw_input
 
     def user_choice(self, prompt: str, choices: list[str]) -> str:
@@ -80,7 +80,7 @@ class RealPlayer(Player):
 
         # if choice is exact
         if raw_input in choices:
-            self.logger.info('Clean input %s', raw_input)
+            self.logger.info('Clean input "%s"', raw_input)
             return raw_input
 
         # if choice starts with input
@@ -91,7 +91,7 @@ class RealPlayer(Player):
                 for choice in filtered_choices:
                     print(f'* {choice}')
                 raise ValueError
-            self.logger.info('Clean input %s', filtered_choices[0])
+            self.logger.info('Clean input "%s"', filtered_choices[0])
             return filtered_choices[0]
 
         # else show minimum levenshtein distance
